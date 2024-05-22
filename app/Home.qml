@@ -2,12 +2,11 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
-
 Rectangle {
     anchors.fill: parent
     Image {
         id : imageBackgroud
-        source: "home.jpeg"
+        source: "../data/home.jpeg"
         fillMode: Image.Stretch
         anchors.fill: parent
         opacity: 0.9

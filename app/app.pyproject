@@ -5,9 +5,7 @@
         "Router.qml",
         "main.py",
         "main.qml",
-        "home.jpeg",
-        "Backgroud.qml"
-    ],
-    "folder": [
+        "Backgroud.qml",
+        "data/home.jpeg"
     ]
 }
