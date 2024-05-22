@@ -1,6 +1,13 @@
 {
     "files": [
+        "Home.qml",
+        "Login.qml",
+        "Router.qml",
         "main.py",
-        "main.qml"
+        "main.qml",
+        "home.jpeg",
+        "Backgroud.qml"
+    ],
+    "folder": [
     ]
 }
