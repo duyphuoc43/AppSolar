@@ -6,7 +6,7 @@ Rectangle {
     anchors.fill: parent
     Image {
         id : imageBackgroud
-        source: "../data/home.jpeg"
+        source: "../data/home.png"
         fillMode: Image.Stretch
         anchors.fill: parent
         opacity: 0.9

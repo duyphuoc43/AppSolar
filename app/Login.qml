@@ -3,7 +3,13 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 
+
 ColumnLayout{
+
+    signal loginSuccessful
+    property alias username: textUser.text
+    property alias password: textPassword.text
+    property alias statusLogin : statusText.text
     anchors.fill: parent
     Column {
         width: 400
@@ -47,9 +53,10 @@ ColumnLayout{
                         height: childrenRect.height
                     }
                     TextField {
+                        id : textUser
                         width: 300
                         height: 30
-                        // placeholderText: qsTr("Username")
+                        placeholderText: qsTr("")
                     }
                     Rectangle{
                         color: "#cdf2f2"
@@ -66,6 +73,7 @@ ColumnLayout{
                                 font.family: "Helvetica"
                                 font.pointSize: 15
                                 color: "#000000"
+
                             }
                             width: childrenRect.width
                             height: childrenRect.height
@@ -86,11 +94,14 @@ ColumnLayout{
                         }
                     }
                     TextField {
+                        id : textPassword
                         width: 300
                         height: 30
-                        // placeholderText: qsTr("Password")
+                        placeholderText: qsTr("")
+                        echoMode: TextInput.Password
                     }
                 }
+
                 Rectangle {
                     id : signin
                     color: "#36d556"
@@ -100,15 +111,29 @@ ColumnLayout{
                     radius : 8
                     MouseArea{
                         anchors.fill: parent
-                        onClicked: { signin.color = "yellow" }
+                        onClicked: { loginController.login(username, password) }
                     }
                     Text {
+                        id : statusText
                         text: qsTr("Sign in")
                         font.pointSize: 15
                         anchors.centerIn: parent
                     }
                 }
             }
+        }
+    }
+    Connections {
+        target: loginController
+        function onLoginResult(boolValue) {
+            if(boolValue){
+                statusLogin = "Đăng nhập thành công"
+                loginSuccessful()
+            }
+            else{
+                statusLogin = "Đăng nhập thất bại"
+            }
+            checkLogin = boolValue
         }
     }
 }

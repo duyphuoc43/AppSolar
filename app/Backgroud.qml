@@ -10,3 +10,13 @@ Rectangle {
         opacity: 0.9
     }
 }
+// Button {
+//     text: qsTr("Choose Folder.")
+//     onClicked: fileDialog.open()
+// }
+
+// FileDialog {
+//     id: folderDialog
+//     currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+//     onAccepted: image.source = selectedFiles
+// }
