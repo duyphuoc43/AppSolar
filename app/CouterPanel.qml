@@ -3,6 +3,7 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
+import Qt.labs.platform
 Rectangle {
     anchors.fill: parent
 
@@ -11,78 +12,124 @@ Rectangle {
         // currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         onAccepted : imageProcessor.process_image(selectedFile)
     }
-
+    FolderDialog {
+        id: folderDialog
+        folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        onAccepted: imageProcessor.process_model(folder)
+    }
     FileDialog {
         id: fileModel
         // selectedFile : StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         nameFilters: ["*.pt"]
         onAccepted: imageProcessor.process_model(selectedFile)
     }
+    RowLayout{
+        ColumnLayout{
+            Button {
+                text: "Open Image"
+                onClicked: folderDialog.open()
+            }
 
-    ColumnLayout{
+            Button {
+                text: "Chose Model"
+                onClicked: fileModel.open()
+            }
+
+            Button {
+                text: "Detection"
+                onClicked: imageProcessor.detection()
+            }
+        }
+
 
         Button {
-            text: "Open Image"
-            onClicked: fileDialog.open()
+            text: "Back"
+            // onClicked: fileModel.open()
         }
 
         Button {
-            text: "Chose Model"
-            onClicked: fileModel.open()
+            text: "Next"
+            // onClicked: fileModel.open()
         }
 
-        Button {
-            text: "Detection"
-            onClicked: imageProcessor.detection()
-        }
+        Rectangle {
+            width: 1200
+            height: 900
+            Layout.alignment: Qt.AlignTop
+            Image {
+                id: imageView
+                anchors.fill: parent
+                source: "../data/home.png"
+            }
+            Repeater {
+                id : repeaterRectangle
+                model: detectionsModel
+                delegate: Rectangle {
+                    required property real x_box
+                    required property real y_box
+                    required property real w_box
+                    required property real h_box
+                    required property real confidence
+                    required property int class_id
+                    color: "transparent"
+                    border.color: class_id > 1 ?  "red" : "green"
+                    border.width: 2
+                    x: x_box
+                    y: y_box
+                    width: w_box
+                    height: h_box
 
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: textInfo.visible = true
+                        onExited: textInfo.visible = false
+
+                        Text {
+                            id: textInfo
+                            text: "Class ID: " + class_id + "\nConfidence: " + confidence
+                            color: "white"
+                            visible: false
+                            anchors {
+                                top: parent.top
+                                left: parent.left
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle{
+            width: 300
+            height: 900
+            RowLayout{
+                ListView {
+                    anchors.fill: parent
+                    model: myList
+                    delegate: Text {
+                        required property int sumPanel
+                        required property int age
+                        text: type +  ", " + age
+                    }
+                }
+            }
+        }
     }
 
-    Rectangle {
-        width: 1200
-        height: 900
-        x : 100
-        Image {
-            id: imageView
-            anchors.fill: parent
-            source: "../data/home.png"
-        }
-    }
-    Repeater {
-        id : repeaterRectangle
-        model: [{'bbox': [831.34716796875,
-                    68.8214111328125,
-                    904.4148559570312,
-                    103.6904525756836],
-                   'confidence': 0.8047338128089905,
-                   'class_id': 0},
-            {'bbox': [574.1788330078125, 801.4324951171875, 647.34375, 833.5603637695312],
-             'confidence': 0.8023658990859985,
-             'class_id': 0},
-            {'bbox': [516.3645629882812,
-              426.8780822753906,
-              589.8557739257812,
-              461.0565490722656],
-             'confidence': 0.8021420240402222,
-             'class_id': 0}]
-
-        delegate: Rectangle {
-            color: "transparent"
-            border.color: "red"
-            border.width: 2
-            x: modelData.bbox[0]
-            y: modelData.bbox[1]
-            width: modelData.bbox[2] - modelData.bbox[0]
-            height: modelData.bbox[3] - modelData.bbox[1]
-        }
-    }
     ListModel {
         id: detectionsModel
     }
+
     Connections {
         target: imageProcessor
         function onImageProcessed(base64_image) {
             imageView.source = "data:image/png;base64," + base64_image
+        }
+        function onResultsProcessed(list) {
+            // console.error(list)
+            for (var i = 0 ; i <  list.length ; i++ ) {
+                detectionsModel.append(list[i])
+            }
         }
     }
 }

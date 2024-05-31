@@ -30,6 +30,7 @@ class ImageProcessor(QObject):
     @Slot(str)
     def process_image(self, image_path):
         # Đọc ảnh
+        print(image_path)
         self.path_image = image_path[8:]
         image = cv2.imread(self.path_image)
         image = cv2.resize(image, (1200, 900))
@@ -61,33 +62,16 @@ class ImageProcessor(QObject):
                     confidence = box.conf.item()
                     class_id = int(box.cls.item())
                     detection = {
-                        'bbox': [x_min, y_min, x_max, y_max],
+                        'x_box' : x_min,
+                        'y_box' : y_min,
+                        'w_box' : x_max-x_min,
+                        'h_box' : y_max-y_min,
                         'confidence': confidence,
                         'class_id': class_id
                     }
-                    detection_json = json.dumps(detection)
-                    detections.append(detection_json)
-        print(detections[0])
-
-        # return self.resultsProcessed.emit(detections)
-
-        a = [{'bbox': [831.34716796875,
-                            68.8214111328125,
-                            904.4148559570312,
-                            103.6904525756836],
-                           'confidence': 0.8047338128089905,
-                           'class_id': 0},
-                    {'bbox': [574.1788330078125, 801.4324951171875, 647.34375, 833.5603637695312],
-                     'confidence': 0.8023658990859985,
-                     'class_id': 0},
-                    {'bbox': [516.3645629882812,
-                      426.8780822753906,
-                      589.8557739257812,
-                      461.0565490722656],
-                     'confidence': 0.8021420240402222,
-                     'class_id': 0}]
-        return a
-
+                    # detection_json = json.dumps(detection)
+                    detections.append(detection)
+        return self.resultsProcessed.emit(detections)
 
 
 
