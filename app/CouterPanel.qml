@@ -9,27 +9,30 @@ Rectangle {
 
     FileDialog {
         id: fileDialog
-        // currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-        onAccepted : imageProcessor.process_image(selectedFile)
+        file: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        onAccepted : imageProcessor.process_image(file)
     }
     FolderDialog {
         id: folderDialog
         folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-        onAccepted: imageProcessor.process_model(folder)
+        onAccepted: imageProcessor.process_folder(folder)
     }
     FileDialog {
         id: fileModel
-        // selectedFile : StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        file : StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         nameFilters: ["*.pt"]
-        onAccepted: imageProcessor.process_model(selectedFile)
+        onAccepted: imageProcessor.process_model(file)
     }
     RowLayout{
         ColumnLayout{
             Button {
-                text: "Open Image"
+                text: "Chose Image"
+                onClicked: fileDialog.open()
+            }
+            Button {
+                text: "Chose Folder"
                 onClicked: folderDialog.open()
             }
-
             Button {
                 text: "Chose Model"
                 onClicked: fileModel.open()
@@ -44,12 +47,12 @@ Rectangle {
 
         Button {
             text: "Back"
-            // onClicked: fileModel.open()
+            onClicked: imageProcessor.back_and_next(-1)
         }
 
         Button {
             text: "Next"
-            // onClicked: fileModel.open()
+            onClicked: imageProcessor.back_and_next(1)
         }
 
         Rectangle {
@@ -71,6 +74,7 @@ Rectangle {
                     required property real h_box
                     required property real confidence
                     required property int class_id
+                    required property int location
                     color: "transparent"
                     border.color: class_id > 1 ?  "red" : "green"
                     border.width: 2
@@ -78,16 +82,22 @@ Rectangle {
                     y: y_box
                     width: w_box
                     height: h_box
-
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
-                        onEntered: textInfo.visible = true
+                        onEntered: {
+
+                            textInfo.visible = true
+                            information.text = "Status of the solar panel:"
+                                    +'\nLocation:' + location
+                                    + "\nClass ID: " + class_id
+                                    + "\nConfidence: " + confidence
+                        }
                         onExited: textInfo.visible = false
 
                         Text {
                             id: textInfo
-                            text: "Class ID: " + class_id + "\nConfidence: " + confidence
+                            text: 'location:' + location + "Class ID: " + class_id + "\nConfidence: " + confidence
                             color: "white"
                             visible: false
                             anchors {
@@ -102,17 +112,30 @@ Rectangle {
         Rectangle{
             width: 300
             height: 900
-            RowLayout{
-                ListView {
-                    anchors.fill: parent
-                    model: myList
-                    delegate: Text {
-                        required property int sumPanel
-                        required property int age
-                        text: type +  ", " + age
-                    }
+            // color : "red"
+            ColumnLayout{
+                Text {
+                    id : information
+                    text: "Status of the solar panel:"
+                }
+                Text {
+                    text: "Information of solar:"
+                            // + "\nSum panel : " +  list.length+1
                 }
             }
+            // RowLayout{
+                // ListView {
+                //     anchors.fill: parent
+                //     model: detectionsModel
+                //     delegate: Text {
+                //         required property int location
+                //         required property int age
+                //         text: "Location : " + location + "/n"
+                //                 + "Class ID: " + class_id + "/n"
+                //                 + "Confidence: " + confidence
+                //     }
+                // }
+            // }
         }
     }
 
@@ -126,7 +149,7 @@ Rectangle {
             imageView.source = "data:image/png;base64," + base64_image
         }
         function onResultsProcessed(list) {
-            // console.error(list)
+            detectionsModel.clear()
             for (var i = 0 ; i <  list.length ; i++ ) {
                 detectionsModel.append(list[i])
             }
