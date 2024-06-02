@@ -6,6 +6,12 @@
         "main.py",
         "main.qml",
         "Backgroud.qml",
-        "data/home.jpeg"
+        "data/home.png",
+        "CouterPanel.qml",
+        "couterPanel.py",
+        "home.py",
+        "login.py",
+        "test.py",
+        "requirements.txt"
     ]
 }

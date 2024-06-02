@@ -15,12 +15,10 @@ Item{
     //         loginPage.visible = false;
     //     }
     // }
-
     // Home {
     //     id : homePage
-    //     visible : false
+    //     visible : true
     // }
-
     CouterPanel{
         id : couterPage
         visible : true

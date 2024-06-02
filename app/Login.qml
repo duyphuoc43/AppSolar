@@ -5,12 +5,27 @@ import QtQuick.Controls
 
 
 ColumnLayout{
-
     signal loginSuccessful
     property alias username: textUser.text
     property alias password: textPassword.text
     property alias statusLogin : statusText.text
+    // property bool checkLogin: false
     anchors.fill: parent
+    Image {
+        id : login
+        source: "../data/login/logo.png"
+        fillMode: Image.Stretch
+        width: 400
+        height: 50
+        opacity: 1
+    }
+    Text{
+        text : "VIETNAM SOLAR POWER EPC CORPORATION"
+        font.pointSize: 50
+        color : "blue"
+        Layout.alignment: Qt.AlignHCenter
+    }
+
     Column {
         width: 400
         height: 600
@@ -133,7 +148,7 @@ ColumnLayout{
             else{
                 statusLogin = "Đăng nhập thất bại"
             }
-            checkLogin = boolValue
+            // checkLogin = boolValue
         }
     }
 }

@@ -45,7 +45,9 @@ class ImageProcessor(QObject):
             self.couterImage = 0
         elif(int(self.couterImage) > len(self.image_array)):
             self.couterImage = int(len(self.image_array))
-        return self.imageProcessed.emit(self.image_array[self.couterImage])
+
+        self.imageProcessed.emit(self.image_array[self.couterImage])
+        return self.resultsProcessed.emit(self.image_information[self.couterImage])
 
 
     @Slot(str)
