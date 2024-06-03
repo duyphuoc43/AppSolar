@@ -14,7 +14,7 @@ def base64ToImage(imageBase64):
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     return image
 def convertToBase64(image):
-    image = cv2.resize(image,(900,700))
+    image = cv2.resize(image,(1200, 800))
     normalized_image = cv2.normalize(image, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
     _, encoded_image = cv2.imencode('.png', normalized_image)
@@ -53,23 +53,25 @@ class ImageProcessor(QObject):
     @Slot(str)
     def process_folder(self, path_folder):
         # Đọc ảnh
-        path_folder = path_folder[8:]
+        path_folder = path_folder[7:]
         self.path_folder = path_folder
         for file in os.listdir(path_folder):
-            link_file = os.path.join(path_folder,file)
-            image = cv2.imread(link_file)
-            image = cv2.resize(image, (1200, 900))
-            base64_image = convertToBase64(image)
-            self.image_array.append(base64_image)
+            if file.endswith('.png') or file.endswith('.jpg')or file.endswith('.jpeg'):
+                link_file = os.path.join(path_folder,file)
+                print(link_file)
+                image = cv2.imread(link_file)
+                image = cv2.resize(image, (1200, 800))
+                base64_image = convertToBase64(image)
+                self.image_array.append(base64_image)
         return self.imageProcessed.emit(self.image_array[0])
 
     @Slot(str)
     def process_image(self, image_path):
         # Đọc ảnh
         print(image_path)
-        self.path_image = image_path[8:]
+        self.path_image = image_path[7:]
         image = cv2.imread(self.path_image)
-        image = cv2.resize(image, (1200, 900))
+        image = cv2.resize(image, (1200, 800))
         base64_image = convertToBase64(image)
         self.imageBase64 = base64_image
         return self.imageProcessed.emit(base64_image)
@@ -77,7 +79,7 @@ class ImageProcessor(QObject):
     @Slot(str)
     def process_model(self, model_path):
         # Đọc mô hình
-        self.path_model = model_path[8:]
+        self.path_model = model_path[7:]
         return
 
     @Slot(result=str)
@@ -89,7 +91,7 @@ class ImageProcessor(QObject):
         images = []
         for image in self.image_array:
             image = base64ToImage(image)
-            image = cv2.resize(image,(1200,900))
+            image = cv2.resize(image,(1200,800))
             images.append(image)
         results = model(images)
 

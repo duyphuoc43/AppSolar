@@ -6,7 +6,8 @@ import QtQuick.Dialogs
 import Qt.labs.platform
 Rectangle {
     id : root
-    anchors.fill: parent
+    width: 1920
+    height: 1080
 
     FileDialog {
         id: fileDialog
@@ -30,7 +31,6 @@ Rectangle {
         Rectangle{
             width: 300
             height: 1080
-            // color : "red"
             ColumnLayout{
                 anchors.centerIn: parent
                 //anchors.horizontalCenter: parent.horizontalCenter
@@ -84,6 +84,7 @@ Rectangle {
                     radius : 20
                     Text{
                         text : "Thông tin của pin mặt trời"
+
                     }
                 }
             }
@@ -91,13 +92,16 @@ Rectangle {
 
         Rectangle {
             width: 1200
-            height: parent.height
+            height: 1080
             ColumnLayout{
-                anchors.centerIn: parent
+                Text{
+                    text : "Couter Panel"
+                    font.pixelSize : 50
+                    Layout.alignment: Qt.AlignHCenter
+                }
                 Rectangle {
                     width: 1200
-                    height: 900
-                    // Layout.alignment: Qt.AlignTop
+                    height: 800
                     Image {
                         id: imageView
                         anchors.fill: parent
@@ -152,15 +156,15 @@ Rectangle {
                     Button {
                         text: "Back"
                         onClicked: imageProcessor.back_and_next(-1)
-                        width: 600 // Độ rộng của nút
-                        height: 30 // Chiều cao của nút
+                        width: 600
+                        height: 50
                     }
 
                     Button {
                         text: "Next"
                         onClicked: imageProcessor.back_and_next(1)
-                        width: 600 // Độ rộng của nút
-                        height: 30 // Chiều cao của nút
+                        width: 600
+                        height: 50
                     }
                 }
             }
