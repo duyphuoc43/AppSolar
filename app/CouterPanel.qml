@@ -37,18 +37,18 @@ Rectangle {
                 Rectangle{
                     width: 200
                     height: 50
-
                     Row{
                         // anchors.centerIn: parent
                         Button {
                             text: "Chose Image"
+                            font.pixelSize: 10
                             onClicked: fileDialog.open()
                             width: 100
                             height: 50
-
                         }
                         Button {
                             text: "Chose Folder"
+                            font.pixelSize: 10
                             onClicked: folderDialog.open()
                             width: 100
                             height: 50

@@ -2,7 +2,14 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Dialogs
+import Qt.labs.platform
 Rectangle {
+    signal profile
+    signal dataBase
+    signal couterSolar
+    signal detection
+    signal logout
     anchors.fill: parent
     Image {
         id : imageBackgroud
@@ -30,6 +37,7 @@ Rectangle {
                            width: 80
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
+                           onClicked: profile()
                            // font.pixelSize: 24
                         }
                         Button {
@@ -37,6 +45,7 @@ Rectangle {
                            width: 80
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
+                           onClicked: dataBase()
                            // font.pixelSize: 24
                         }
                         Button {
@@ -44,6 +53,7 @@ Rectangle {
                            width: 80
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
+                           onClicked: couterSolar()
                            // font.pixelSize: 24
                         }
                         Button {
@@ -51,6 +61,7 @@ Rectangle {
                            width: 80
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
+                           onClicked: detection()
                            // font.pixelSize: 24
                         }
                         Button {
@@ -58,6 +69,7 @@ Rectangle {
                            width: 80
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
+                           onClicked: logout()
                            // font.pixelSize: 24
                         }
                     }

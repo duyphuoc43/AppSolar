@@ -2,14 +2,14 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
-
+import QtQuick.Dialogs
+import Qt.labs.platform
 
 ColumnLayout{
     signal loginSuccessful
     property alias username: textUser.text
     property alias password: textPassword.text
     property alias statusLogin : statusText.text
-    // property bool checkLogin: false
     anchors.fill: parent
     Image {
         id : login
