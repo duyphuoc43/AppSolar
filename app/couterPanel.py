@@ -23,10 +23,10 @@ def convertToBase64(image):
     base64_image = base64.b64encode(encoded_image).decode("utf-8")
 
     return base64_image
+
 class ImageProcessor(QObject):
     imageProcessed = Signal(str)
     resultsProcessed = Signal(list)
-
     def __init__(self):
         super().__init__()
         self.path_image = ''
@@ -37,7 +37,10 @@ class ImageProcessor(QObject):
         self.image_information = []
         self.couterImage = 0
 
-
+    def getIamgeArray():
+        return self.image_array
+    def getIamgeInfor():
+        return self.image_information
     @Slot(int)
     def back_and_next(self,checkChose):
         self.couterImage += int(checkChose)

@@ -6,12 +6,17 @@
         "main.py",
         "main.qml",
         "Backgroud.qml",
-        "data/home.png",
+        "data/home.jpeg",
+        "data/epc.jpg",
+        "data/login/logo.png",
+        "data/home/profile.svg",
         "CouterPanel.qml",
         "couterPanel.py",
         "home.py",
         "login.py",
         "test.py",
-        "requirements.txt"
+        "requirements.txt",
+        "DataBase.qml",
+        "dataBase.py"
     ]
 }

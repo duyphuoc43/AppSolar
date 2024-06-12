@@ -37,7 +37,6 @@ Rectangle {
                 Rectangle{
                     width: 200
                     height: 50
-
                     Row{
                         // anchors.centerIn: parent
                         Button {
@@ -64,14 +63,15 @@ Rectangle {
                         width: 200
                         height: 50
                     }
-
                 }
                 Rectangle{
                     width: 200
                     height: 50
                     Button {
                         text: "Detection"
-                        onClicked: imageProcessor.detection()
+                        onClicked: {
+                            imageProcessor.detection()
+                        }
                         width: 200
                         height: 50
                     }

@@ -3,6 +3,11 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 Rectangle {
+    signal contactprofile
+    signal contactdataBase
+    signal contactcoutersolar
+    signal contactdetection
+    signal contactlogout
     anchors.fill: parent
     Image {
         id : imageBackgroud
@@ -31,6 +36,8 @@ Rectangle {
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
                            // font.pixelSize: 24
+                           onClicked: contactprofile()
+
                         }
                         Button {
                            text: "DataBase"
@@ -38,6 +45,7 @@ Rectangle {
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
                            // font.pixelSize: 24
+                           onClicked: contactdataBase()
                         }
                         Button {
                            text: "Couter Solar"
@@ -45,6 +53,7 @@ Rectangle {
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
                            // font.pixelSize: 24
+                           onClicked: contactcoutersolar()
                         }
                         Button {
                            text: "Detection"
@@ -52,6 +61,7 @@ Rectangle {
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
                            // font.pixelSize: 24
+                           onClicked: contactdetection()
                         }
                         Button {
                            text: "Logout"
@@ -59,6 +69,7 @@ Rectangle {
                            height: 80
                            anchors.horizontalCenter: parent.horizontalCenter
                            // font.pixelSize: 24
+                           onClicked: contactlogout()
                         }
                     }
                 }
@@ -141,6 +152,13 @@ Rectangle {
                                         height: 150
                                         color: "red"
                                         radius : 20
+                                        Text {
+                                            anchors.centerIn: parent
+                                            id: textCPU
+                                            // Component.onCompleted: {
+                                            //        home.get_cpu_percent()
+                                            // }
+                                        }
                                     }
 
                                     Rectangle {
@@ -218,6 +236,23 @@ Rectangle {
                     }
                 }
             }
+        }
+    }
+    Timer {
+        id: timer
+        interval: 1000 // Update every 1 second
+        repeat: true
+        running: true
+        onTriggered: {
+            home.get_cpu_percent()
+        }
+    }
+
+    Connections {
+        target: home
+        function onResultsGet_cpu_percent(cpu_percent) {
+            textCPU.text = "CPU Percent Usage: " + cpu_percent
+            console.error(cpu_percent)
         }
     }
 }

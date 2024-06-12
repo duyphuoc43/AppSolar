@@ -8,17 +8,24 @@ from PySide6.QtCore import QUrl, QObject
 
 from login import Login
 from couterPanel import ImageProcessor
+from dataBase import DataBase
+from home import Home
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
     login_controller = Login()
     engine.rootContext().setContextProperty("loginController", login_controller)
-    print("loginController has been created:", login_controller)
+    # print("loginController has been created:", login_controller)
 
     imageProcessor = ImageProcessor()
     engine.rootContext().setContextProperty("imageProcessor", imageProcessor)
 
+    data_base = DataBase()
+    engine.rootContext().setContextProperty("dataBase", data_base)
+
+    home = Home()
+    engine.rootContext().setContextProperty("home", home)
 
     qml_file = Path(__file__).resolve().parent / "main.qml"
     engine.load(qml_file)
