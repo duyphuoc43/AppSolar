@@ -14,7 +14,7 @@ Rectangle {
         source: "../data/epc.jpg"
         fillMode: Image.Stretch
         anchors.fill: parent
-        opacity: 0.9
+        opacity: 0.8
         RowLayout{
             anchors.fill: parent
             anchors.centerIn: parent
@@ -25,7 +25,7 @@ Rectangle {
                 Rectangle{
                     width: 100
                     height: 800
-                    color : "#240436"
+                    color : "#9943ca"
                     radius: 10
                     Column{
                         spacing: 50
@@ -77,7 +77,7 @@ Rectangle {
             Rectangle{
                 width: 1700
                 height: 800
-                color : "blue"
+                color : "#f7f8f8"
                 border.color: "black"
                 border.width: 5
                 radius : 8
@@ -95,8 +95,8 @@ Rectangle {
                             Rectangle{
                                 width: 790
                                 height: 380
-                                color : "transparent"
-                                border.color: "black"
+                                color : "#6c63e9"
+                                border.color: "transparent"
                                 border.width: 5
                                 radius : 20
 
@@ -108,6 +108,22 @@ Rectangle {
                                         height: 80
                                         radius : 20
                                         color: "yellow"
+                                        Row{
+                                            Column{
+                                                Text {
+                                                    id: info
+                                                    text: qsTr("Name : Duy Phước")
+                                                }
+                                                Text {
+                                                    id: position
+                                                    text: qsTr("Name : Engineer")
+                                                }
+                                            }
+                                            Image {
+                                                id: imagePerson
+                                                source: "file"
+                                            }
+                                        }
                                     }
                                     Rectangle{
                                         width: 760
@@ -120,15 +136,27 @@ Rectangle {
                                                 id : checkGPUandCPU
                                                 width: 370
                                                 height: 260
-                                                color : "red"
+                                                color : "#65ebf0"
                                                 radius : 20
+                                                Text {
+                                                    text: "Thông tin CPU"
+                                                    anchors.centerIn: parent
+                                                }
+                                                Text {
+                                                    text: "Thông tin GPU"
+                                                    anchors.centerIn: parent
+                                                }
                                             }
                                             Rectangle{
                                                 id : checkDataBase
                                                 width: 370
                                                 height: 260
-                                                color : "pink"
+                                                color : "#65ebf0"
                                                 radius : 20
+                                                Text {
+                                                    text: "Thông tin DataBase"
+                                                    anchors.centerIn: parent
+                                                }
                                             }
                                         }
                                     }
@@ -150,14 +178,11 @@ Rectangle {
                                         Layout.rowSpan: 1
                                         width: 300
                                         height: 150
-                                        color: "red"
+                                        color: "#65ebf0"
                                         radius : 20
                                         Text {
+                                            text: "Kết nối DataBase"
                                             anchors.centerIn: parent
-                                            id: textCPU
-                                            // Component.onCompleted: {
-                                            //        home.get_cpu_percent()
-                                            // }
                                         }
                                     }
 
@@ -166,8 +191,12 @@ Rectangle {
                                         Layout.rowSpan: 1
                                         width: 300
                                         height: 150
-                                        color: "green"
+                                        color: "#65ebf0"
                                         radius : 20
+                                        Text {
+                                            text: "Tạo Account"
+                                            anchors.centerIn: parent
+                                        }
                                     }
 
                                     Rectangle {
@@ -175,17 +204,25 @@ Rectangle {
                                         Layout.rowSpan: 1
                                         width: 300
                                         height: 150
-                                        color: "pink"
+                                        color: "#65ebf0"
                                         radius : 20
+                                        Text {
+                                            text: "Kiểm tra kết nối mạng"
+                                            anchors.centerIn: parent
+                                        }
                                     }
-
                                     Rectangle {
                                         Layout.columnSpan: 1
                                         Layout.rowSpan: 1
                                         width: 300
                                         height: 150
-                                        color: "yellow"
+                                        color: "#65ebf0"
                                         radius : 20
+                                        Text {
+                                            text: "Lịch sử"
+                                            anchors.centerIn: parent
+                                        }
+
                                     }
                                 }
                             }
@@ -203,34 +240,76 @@ Rectangle {
                             Rectangle{
                                 width: 300
                                 height: 300
-                                color : "green"
-                                border.color: "black"
+                                color : "#65ebf0"
+                                border.color: "transparent"
                                 border.width: 5
                                 radius : 20
+                                Rectangle{
+                                    width: 150
+                                    height: 150
+                                    anchors.centerIn: parent
+                                    radius : 100
+                                    color : "green"
+                                    border.color: "yellow"
+                                    border.width: 5
+                                }
+
                             }
                             Rectangle{
                                 width: 300
                                 height: 300
-                                color : "green"
-                                border.color: "black"
+                                color : "#65ebf0"
+                                border.color: "transparent"
                                 border.width: 5
                                 radius : 20
+                                Rectangle{
+                                    width: 150
+                                    height: 150
+                                    anchors.centerIn: parent
+                                    radius : 100
+                                    color : "#ffffff"
+                                    MouseArea{
+                                        anchors.fill: parent
+                                        Text {
+                                            text: "LOCK"
+                                            anchors.centerIn: parent
+                                        }
+                                    }
+                                }
                             }
                             Rectangle{
                                 width: 300
                                 height: 300
-                                color : "green"
-                                border.color: "black"
+                                color :"#65ebf0"
+                                border.color: "transparent"
                                 border.width: 5
                                 radius : 20
+                                Text {
+                                    text: "24"
+                                    anchors.centerIn: parent
+                                }
                             }
                             Rectangle{
                                 width: 300
                                 height: 300
-                                color : "green"
-                                border.color: "black"
+                                color : "#65ebf0"
+                                border.color: "transparent"
                                 border.width: 5
                                 radius : 20
+                                Rectangle{
+                                    width: 150
+                                    height: 150
+                                    anchors.centerIn: parent
+                                    radius : 100
+                                    color : "#ffffff"
+                                    MouseArea{
+                                        anchors.fill: parent
+                                        Text {
+                                            text: "Logout"
+                                            anchors.centerIn: parent
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -238,21 +317,21 @@ Rectangle {
             }
         }
     }
-    Timer {
-        id: timer
-        interval: 1000 // Update every 1 second
-        repeat: true
-        running: true
-        onTriggered: {
-            home.get_cpu_percent()
-        }
-    }
+    // Timer {
+    //     id: timer
+    //     interval: 1000 // Update every 1 second
+    //     repeat: true
+    //     running: true
+    //     onTriggered: {
+    //         home.get_cpu_percent()
+    //     }
+    // }
 
-    Connections {
-        target: home
-        function onResultsGet_cpu_percent(cpu_percent) {
-            textCPU.text = "CPU Percent Usage: " + cpu_percent
-            console.error(cpu_percent)
-        }
-    }
+    // Connections {
+    //     target: home
+    //     function onResultsGet_cpu_percent(cpu_percent) {
+    //         textCPU.text = "CPU Percent Usage: " + cpu_percent
+    //         console.error(cpu_percent)
+    //     }
+    // }
 }

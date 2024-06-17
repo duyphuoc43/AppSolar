@@ -39,14 +39,14 @@ Item{
             loginPage.visible = true;
         }
     }
-    CouterPanel{
-        id : couterPage
-        visible : false
-    }
-    DataBase{
-        id : dataBasePage
-        visible : false
-    }
+    // CouterPanel{
+    //     id : couterPage
+    //     visible : false
+    // }
+    // DataBase{
+    //     id : dataBasePage
+    //     visible : false
+    // }
 }
 
 
