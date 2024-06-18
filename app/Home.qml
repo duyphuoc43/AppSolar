@@ -138,13 +138,22 @@ Rectangle {
                                                 height: 260
                                                 color : "#65ebf0"
                                                 radius : 20
-                                                Text {
-                                                    text: "Thông tin CPU"
-                                                    anchors.centerIn: parent
-                                                }
-                                                Text {
-                                                    text: "Thông tin GPU"
-                                                    anchors.centerIn: parent
+                                                ColumnLayout{
+                                                    anchors.fill: parent
+                                                    spacing : 10
+                                                    Text {
+                                                        id : textCPU
+                                                        text: "Thông tin CPU"
+                                                    }
+                                                    Text {
+                                                        id : textGPU
+                                                        text: "Thông tin GPU"
+                                                    }
+                                                    Text {
+                                                        id : textRAM
+                                                        text: "Thông tin RAM"
+
+                                                    }
                                                 }
                                             }
                                             Rectangle{
@@ -166,13 +175,25 @@ Rectangle {
                                 width: 790
                                 height: 380
                                 color : "transparent"
+
+                                DataBase{
+                                    id : dataBase
+                                    visible : false
+                                    Connections {
+                                        target: dataBase
+                                        onButtonClicked: {
+                                            dataBase.visible = false
+                                        }
+                                    }
+                                }
+
                                 GridLayout {
+                                    visible : !dataBase.visible
                                     columnSpacing: 50
                                     rowSpacing: 50
                                     anchors.centerIn: parent
                                     columns: 2
                                     rows: 2
-
                                     Rectangle {
                                         Layout.columnSpan: 1
                                         Layout.rowSpan: 1
@@ -183,6 +204,12 @@ Rectangle {
                                         Text {
                                             text: "Kết nối DataBase"
                                             anchors.centerIn: parent
+                                        }
+                                        MouseArea {
+                                            anchors.fill: parent 
+                                            onClicked: {
+                                                dataBase.visible= true
+                                            }
                                         }
                                     }
 
@@ -198,15 +225,22 @@ Rectangle {
                                             anchors.centerIn: parent
                                         }
                                     }
-
                                     Rectangle {
                                         Layout.columnSpan: 1
                                         Layout.rowSpan: 1
                                         width: 300
                                         height: 150
                                         color: "#65ebf0"
-                                        radius : 20
+                                        radius: 20
+
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                home.check_internet_connection()
+                                            }
+                                        }
                                         Text {
+                                            id: textInternet
                                             text: "Kiểm tra kết nối mạng"
                                             anchors.centerIn: parent
                                         }
@@ -237,77 +271,122 @@ Rectangle {
                         RowLayout{
                             anchors.centerIn: parent
                             spacing: 134
-                            Rectangle{
+                            
+                            Rectangle {
                                 width: 300
                                 height: 300
-                                color : "#65ebf0"
+                                color: "#65ebf0"
                                 border.color: "transparent"
                                 border.width: 5
-                                radius : 20
-                                Rectangle{
+                                radius: 20
+
+                                Rectangle {
+                                    id: onIndicator
                                     width: 150
                                     height: 150
                                     anchors.centerIn: parent
-                                    radius : 100
-                                    color : "green"
+                                    radius: 100
+                                    color: "green"
                                     border.color: "yellow"
                                     border.width: 5
+                                    visible: true
+
+                                    Text {
+                                        text: "ON"
+                                        font.pointSize: 24
+                                        font.bold: true
+                                        color: "#000000"
+                                        anchors.centerIn: parent
+                                        horizontalAlignment: Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                    }
                                 }
 
+                                // MouseArea {
+                                //     anchors.fill: parent
+                                //     onClicked: {
+                                //         onIndicator.visible = !onIndicator.visible;
+                                //     }
+                                // }
                             }
-                            Rectangle{
+                            Rectangle {
                                 width: 300
                                 height: 300
-                                color : "#65ebf0"
+                                color: "#65ebf0"
                                 border.color: "transparent"
                                 border.width: 5
-                                radius : 20
-                                Rectangle{
+                                radius: 20
+
+                                Rectangle {
                                     width: 150
                                     height: 150
                                     anchors.centerIn: parent
-                                    radius : 100
-                                    color : "#ffffff"
-                                    MouseArea{
+                                    radius: 75
+                                    color: "#ffffff"
+
+                                    MouseArea {
                                         anchors.fill: parent
+
                                         Text {
                                             text: "LOCK"
+                                            font.pointSize: 24
+                                            font.bold: true
+                                            color: "#000000"
                                             anchors.centerIn: parent
+                                            horizontalAlignment: Text.AlignHCenter
+                                            verticalAlignment: Text.AlignVCenter
                                         }
                                     }
                                 }
                             }
-                            Rectangle{
+                            Rectangle {
                                 width: 300
                                 height: 300
-                                color :"#65ebf0"
+                                color: "#65ebf0"
                                 border.color: "transparent"
                                 border.width: 5
-                                radius : 20
+                                radius: 20
+
                                 Text {
-                                    text: "24"
+                                    text: "24°C"
+                                    font.pointSize: 48
+                                    font.bold: true
+                                    color: "#ffffff"
                                     anchors.centerIn: parent
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
                                 }
                             }
-                            Rectangle{
+                            Rectangle {
                                 width: 300
                                 height: 300
-                                color : "#65ebf0"
+                                color: "#65ebf0"
                                 border.color: "transparent"
                                 border.width: 5
-                                radius : 20
-                                Rectangle{
+                                radius: 20
+
+                                Rectangle {
                                     width: 150
                                     height: 150
                                     anchors.centerIn: parent
-                                    radius : 100
-                                    color : "#ffffff"
-                                    MouseArea{
+                                    radius: 75
+                                    color: "#ffffff"
+
+                                    MouseArea {
                                         anchors.fill: parent
-                                        Text {
-                                            text: "Logout"
-                                            anchors.centerIn: parent
+                                        onClicked: {
+                                            console.log("Logout clicked")
                                         }
+                                    }
+
+                                    Text {
+                                        text: "LOGOUT"
+                                        font.pointSize: 24
+                                        font.bold: true
+                                        color: "#000000"
+                                        anchors.centerIn: parent
+                                        horizontalAlignment: Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
                                     }
                                 }
                             }
@@ -317,21 +396,26 @@ Rectangle {
             }
         }
     }
-    // Timer {
-    //     id: timer
-    //     interval: 1000 // Update every 1 second
-    //     repeat: true
-    //     running: true
-    //     onTriggered: {
-    //         home.get_cpu_percent()
-    //     }
-    // }
+    Component.onCompleted: {
+        home.get_cpu_info()
+        home.get_ram_info()
+        home.get_gpu_info()
+        // home.check_internet_connection()
+    }
 
-    // Connections {
-    //     target: home
-    //     function onResultsGet_cpu_percent(cpu_percent) {
-    //         textCPU.text = "CPU Percent Usage: " + cpu_percent
-    //         console.error(cpu_percent)
-    //     }
-    // }
+    Connections {
+        target: home
+        function onResultsGet_cpu_percent(infoText) {
+            textCPU.text = infoText
+        }
+        function onResultsGet_gpu_percent(infoText) {
+            textGPU.text = infoText
+        }
+        function onResultsGet_ram_percent(infoText) {
+            textRAM.text = infoText
+        }
+        function onResultsCheck_internet(infoText) {
+            textInternet.text = infoText
+        }
+    }
 }

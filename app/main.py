@@ -21,8 +21,8 @@ if __name__ == "__main__":
     imageProcessor = ImageProcessor()
     engine.rootContext().setContextProperty("imageProcessor", imageProcessor)
 
-    data_base = DataBase()
-    engine.rootContext().setContextProperty("dataBase", data_base)
+    db = DataBase()
+    engine.rootContext().setContextProperty("db", db)
 
     home = Home()
     engine.rootContext().setContextProperty("home", home)

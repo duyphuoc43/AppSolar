@@ -6,45 +6,109 @@ import QtQuick.Dialogs
 import Qt.labs.platform
 
 Rectangle {
-    id : root
+
+    signal buttonClicked()
+
+    id: root
     anchors.fill: parent
-    ColumnLayout{
+    color: "transparent"
+    radius : 10
+    Rectangle{
+        border.width : 5
+        border.color : "#000000"
+        color: "#f0f0f0"
+        radius : 10
+    }
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 10
         TextField {
-            id : textHost
-            width: 300
-            height: 30
-            placeholderText: qsTr("127.0.0.1")
+            id: textHost
+            Layout.fillWidth: true
+            placeholderText: qsTr("Host (e.g., 127.0.0.1)")
+            font.pixelSize: 16
+            height: 40
+            background: Rectangle {
+                color: "white"
+                radius: 5
+                border.color: "lightgrey"
+                border.width: 1
+            }
         }
         TextField {
-            id : textPort
-            width: 300
-            height: 30
-            placeholderText: qsTr("3306")
+            id: textPort
+            Layout.fillWidth: true
+            placeholderText: qsTr("Port (e.g., 3306)")
+            font.pixelSize: 16
+            height: 40
+            background: Rectangle {
+                color: "white"
+                radius: 5
+                border.color: "lightgrey"
+                border.width: 1
+            }
         }
+
         TextField {
-            id : textDatabase
-            width: 300
-            height: 30
-            placeholderText: qsTr("appsolar")
+            id: textDatabase
+            Layout.fillWidth: true
+            placeholderText: qsTr("Database name")
+            font.pixelSize: 16
+            height: 40
+            background: Rectangle {
+                color: "white"
+                radius: 5
+                border.color: "lightgrey"
+                border.width: 1
+            }
         }
+
         TextField {
-            id : textUser
-            width: 300
-            height: 30
-            placeholderText: qsTr("duyphuoc")
+            id: textUser
+            Layout.fillWidth: true
+            placeholderText: qsTr("Username")
+            font.pixelSize: 16
+            height: 40
+            background: Rectangle {
+                color: "white"
+                radius: 5
+                border.color: "lightgrey"
+                border.width: 1
+            }
         }
+
         TextField {
-            id : textPassword
-            width: 300
-            height: 30
-            placeholderText: qsTr("bebiu2020")
+            id: textPassword
+            Layout.fillWidth: true
+            placeholderText: qsTr("Password")
+            font.pixelSize: 16
+            height: 40
+            background: Rectangle {
+                color: "white"
+                radius: 5
+                border.color: "lightgrey"
+                border.width: 1
+            }
         }
+
         Button {
-            text: "Connect DataBase"
-            onClicked: dataBase.connect_dataBase(textHost.text,textPort.text,textDatabase.text,
-                                                 textUser.text,textPassword.text)
-            width: 100
+            text: "Connect to Database"
+            Layout.alignment: Qt.AlignHCenter
+            width: 200
             height: 50
+            font.pixelSize: 16
+            background: Rectangle {
+                color: "#6ab4e3"
+                radius: 5
+                border.color: "#6ab4e3"
+                border.width: 1
+            }
+            onClicked: {
+                db.connectDataBase(textHost.text, textPort.text, textDatabase.text,
+                                            textUser.text, textPassword.text)
+                buttonClicked(textHost.text, textPort.text, textDatabase.text,
+                                            textUser.text)
+            }
         }
     }
 }

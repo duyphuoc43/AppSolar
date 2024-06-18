@@ -21,6 +21,7 @@ class DataBase(QObject):
         self.cursor = ''
         self.image_array = ImageProcessor.getIamgeArray
         self.image_information = ImageProcessor.getIamgeInfor
+
     @Slot(str,int,str,str,str)
     def connectDataBase(self, hostText, portText, databaseText, userText, passwordText):
         self.connection = mysql.connector.connect(
@@ -38,8 +39,8 @@ class DataBase(QObject):
         if self.connection.is_connected():
             print("Connected to MySQL database")
             self.cursor = self.connection.cursor()
-            print(self.image_array)
-        return self.resultsConnectDataBase.emit("Connected to MySQL database")
+            return self.resultsConnectDataBase.emit("Connected to MySQL database")
+        return self.resultsConnectDataBase.emit("Disconnected to MySQL database")
 
     @Slot(str,str,str)
     def insertCompany(self, idCompany, date = None, address = None):

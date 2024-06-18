@@ -4,14 +4,16 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 import Qt.labs.platform
+
 Rectangle {
-    id : root
+    id: root
     anchors.fill: parent
+    color: "#333333"  // Màu nền tối
 
     FileDialog {
         id: fileDialog
         file: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-        onAccepted : imageProcessor.process_image(file)
+        onAccepted: imageProcessor.process_image(file)
     }
     FolderDialog {
         id: folderDialog
@@ -20,70 +22,74 @@ Rectangle {
     }
     FileDialog {
         id: fileModel
-        file : StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        file: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         nameFilters: ["*.pt"]
         onAccepted: imageProcessor.process_model(file)
     }
-    RowLayout{
+
+    RowLayout {
         anchors.fill: parent
-        anchors.centerIn: parent
-        Rectangle{
+        Rectangle {
             width: 300
             height: 1080
-            // color : "red"
-            ColumnLayout{
+            color: "#444444"  // Màu nền tối hơn
+            radius: 20
+
+            ColumnLayout {
                 anchors.centerIn: parent
-                //anchors.horizontalCenter: parent.horizontalCenter
-                Rectangle{
+
+                Rectangle {
                     width: 200
                     height: 50
-                    Row{
-                        // anchors.centerIn: parent
+
+                    Row {
                         Button {
-                            text: "Chose Image"
+                            text: "Chọn Ảnh"
                             onClicked: fileDialog.open()
                             width: 100
                             height: 50
-
                         }
                         Button {
-                            text: "Chose Folder"
+                            text: "Chọn Thư Mục"
                             onClicked: folderDialog.open()
                             width: 100
                             height: 50
                         }
                     }
                 }
-                Rectangle{
+
+                Rectangle {
                     width: 200
                     height: 50
                     Button {
-                        text: "Chose Model"
+                        text: "Chọn Mô Hình"
                         onClicked: fileModel.open()
                         width: 200
                         height: 50
                     }
                 }
-                Rectangle{
+
+                Rectangle {
                     width: 200
                     height: 50
                     Button {
-                        text: "Detection"
-                        onClicked: {
-                            imageProcessor.detection()
-                        }
+                        text: "Phát Hiện"
+                        onClicked: imageProcessor.detection()
                         width: 200
                         height: 50
                     }
                 }
-                Rectangle{
+
+                Rectangle {
                     width: 200
                     height: 600
-                    border.color: "black"
-                    border.width: 5
-                    radius : 20
-                    Text{
-                        text : "Thông tin của pin mặt trời"
+                    border.color: "white"
+                    border.width: 2
+                    radius: 20
+                    Text {
+                        text: "Thông tin của pin mặt trời"
+                        anchors.centerIn: parent
+                        color: "white"
                     }
                 }
             }
@@ -92,19 +98,23 @@ Rectangle {
         Rectangle {
             width: 1200
             height: parent.height
-            ColumnLayout{
+            color: "#444444"  // Màu nền tối hơn
+
+            ColumnLayout {
                 anchors.centerIn: parent
+
                 Rectangle {
                     width: 1200
                     height: 900
-                    // Layout.alignment: Qt.AlignTop
+
                     Image {
                         id: imageView
                         anchors.fill: parent
                         source: "../data/home.png"
                     }
+
                     Repeater {
-                        id : repeaterRectangle
+                        id: repeaterRectangle
                         model: detectionsModel
                         delegate: Rectangle {
                             required property real x_box
@@ -114,29 +124,30 @@ Rectangle {
                             required property real confidence
                             required property int class_id
                             required property int location
+
                             color: "transparent"
-                            border.color: class_id > 1 ?  "red" : "green"
+                            border.color: class_id > 1 ? "red" : "green"
                             border.width: 2
                             x: x_box
                             y: y_box
                             width: w_box
                             height: h_box
+
                             MouseArea {
                                 anchors.fill: parent
                                 hoverEnabled: true
                                 onEntered: {
-
                                     textInfo.visible = true
-                                    information.text = "Status of the solar panel:"
-                                            +'\nLocation:' + location
-                                            + "\nClass ID: " + class_id
-                                            + "\nConfidence: " + confidence
+                                    information.text = "Trạng thái của pin mặt trời:" +
+                                                      '\nVị trí: ' + location +
+                                                      "\nClass ID: " + class_id +
+                                                      "\nĐộ chắc chắn: " + confidence
                                 }
                                 onExited: textInfo.visible = false
 
                                 Text {
                                     id: textInfo
-                                    text: 'location:' + location + "Class ID: " + class_id + "\nConfidence: " + confidence
+                                    text: 'Vị trí: ' + location + "Class ID: " + class_id + "\nĐộ chắc chắn: " + confidence
                                     color: "white"
                                     visible: false
                                     anchors {
@@ -148,56 +159,45 @@ Rectangle {
                         }
                     }
                 }
-                Row{
+
+                Row {
                     Button {
-                        text: "Back"
+                        text: "Quay Lại"
                         onClicked: imageProcessor.back_and_next(-1)
-                        width: 600 // Độ rộng của nút
-                        height: 30 // Chiều cao của nút
+                        width: 600
+                        height: 30
                     }
 
                     Button {
-                        text: "Next"
+                        text: "Tiếp Theo"
                         onClicked: imageProcessor.back_and_next(1)
-                        width: 600 // Độ rộng của nút
-                        height: 30 // Chiều cao của nút
+                        width: 600
+                        height: 30
                     }
                 }
             }
         }
 
-
-
-
-
-
-        Rectangle{
+        Rectangle {
             width: 300
             height: 900
-            // color : "red"
-            ColumnLayout{
+            color: "#444444"  // Màu nền tối hơn
+            ColumnLayout {
                 Text {
-                    id : information
-                    text: "Status of the solar panel:"
+                    id: information
+                    text: "Trạng thái của pin mặt trời:"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.bold: true
+                    font.pixelSize: 18
+                    color: "white"
                 }
                 Text {
-                    text: "Information of solar:"
-                            // + "\nSum panel : " +  list.length+1
+                    text: "Thông tin về pin mặt trời:"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: 16
+                    color: "white"
                 }
             }
-            // RowLayout{
-                // ListView {
-                //     anchors.fill: parent
-                //     model: detectionsModel
-                //     delegate: Text {
-                //         required property int location
-                //         required property int age
-                //         text: "Location : " + location + "/n"
-                //                 + "Class ID: " + class_id + "/n"
-                //                 + "Confidence: " + confidence
-                //     }
-                // }
-            // }
         }
     }
 
