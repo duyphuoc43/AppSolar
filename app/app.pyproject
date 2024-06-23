@@ -17,6 +17,8 @@
         "test.py",
         "requirements.txt",
         "DataBase.qml",
-        "dataBase.py"
+        "dataBase.py",
+        "Detection.qml",
+        "detection.py"
     ]
 }

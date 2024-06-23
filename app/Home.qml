@@ -108,7 +108,7 @@ Rectangle {
                                         height: 80
                                         radius : 20
                                         color: "yellow"
-                                        Row{
+                                        RowLayout{
                                             Column{
                                                 Text {
                                                     id: info
@@ -116,13 +116,13 @@ Rectangle {
                                                 }
                                                 Text {
                                                     id: position
-                                                    text: qsTr("Name : Engineer")
+                                                    text: qsTr("Position : Engineer")
                                                 }
                                             }
-                                            Image {
-                                                id: imagePerson
-                                                source: "file"
-                                            }
+                                            // Image {
+                                            //     id: imagePerson
+                                            //     source: "file"
+                                            // }
                                         }
                                     }
                                     Rectangle{
@@ -179,12 +179,11 @@ Rectangle {
                                 DataBase{
                                     id : dataBase
                                     visible : false
-                                    Connections {
-                                        target: dataBase
+
                                         onButtonClicked: {
                                             dataBase.visible = false
                                         }
-                                    }
+
                                 }
 
                                 GridLayout {

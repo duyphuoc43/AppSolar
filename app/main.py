@@ -10,6 +10,7 @@ from login import Login
 from couterPanel import ImageProcessor
 from dataBase import DataBase
 from home import Home
+from detection import Detection
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
@@ -26,6 +27,9 @@ if __name__ == "__main__":
 
     home = Home()
     engine.rootContext().setContextProperty("home", home)
+
+    detection = Detection()
+    engine.rootContext().setContextProperty("detection", detection)
 
     qml_file = Path(__file__).resolve().parent / "main.qml"
     engine.load(qml_file)

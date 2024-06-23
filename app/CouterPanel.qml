@@ -6,6 +6,9 @@ import QtQuick.Dialogs
 import Qt.labs.platform
 
 Rectangle {
+
+    signal back_home()
+
     id: root
     anchors.fill: parent
     color: "#333333"  // Màu nền tối
@@ -34,7 +37,13 @@ Rectangle {
             height: 1080
             color: "#444444"  // Màu nền tối hơn
             radius: 20
-
+            Button{
+                id: backHome
+                width: 100
+                height: 60
+                onClicked: back_home()
+                text: "Back Home"
+            }
             ColumnLayout {
                 anchors.centerIn: parent
 
@@ -79,7 +88,16 @@ Rectangle {
                         height: 50
                     }
                 }
-
+                Rectangle {
+                    width: 200
+                    height: 50
+                    Button {
+                        text: "Lưu vào DataBase"
+                        onClicked: imageProcessor.insertStringPanel()
+                        width: 200
+                        height: 50
+                    }
+                }
                 Rectangle {
                     width: 200
                     height: 600
@@ -182,7 +200,7 @@ Rectangle {
             width: 300
             height: 900
             color: "#444444"  // Màu nền tối hơn
-            ColumnLayout {
+            Column {
                 Text {
                     id: information
                     text: "Trạng thái của pin mặt trời:"
@@ -191,12 +209,12 @@ Rectangle {
                     font.pixelSize: 18
                     color: "white"
                 }
-                Text {
-                    text: "Thông tin về pin mặt trời:"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.pixelSize: 16
-                    color: "white"
-                }
+                // Text {
+                //     text: "Thông tin về pin mặt trời:"
+                //     anchors.horizontalCenter: parent.horizontalCenter
+                //     font.pixelSize: 16
+                //     color: "white"
+                // }
             }
         }
     }

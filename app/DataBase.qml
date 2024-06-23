@@ -28,12 +28,12 @@ Rectangle {
             placeholderText: qsTr("Host (e.g., 127.0.0.1)")
             font.pixelSize: 16
             height: 40
-            background: Rectangle {
-                color: "white"
-                radius: 5
-                border.color: "lightgrey"
-                border.width: 1
-            }
+            // background: Rectangle {
+            //     color: "white"
+            //     radius: 5
+            //     border.color: "lightgrey"
+            //     border.width: 1
+            // }
         }
         TextField {
             id: textPort
@@ -41,12 +41,12 @@ Rectangle {
             placeholderText: qsTr("Port (e.g., 3306)")
             font.pixelSize: 16
             height: 40
-            background: Rectangle {
-                color: "white"
-                radius: 5
-                border.color: "lightgrey"
-                border.width: 1
-            }
+            // background: Rectangle {
+            //     color: "white"
+            //     radius: 5
+            //     border.color: "lightgrey"
+            //     border.width: 1
+            // }
         }
 
         TextField {
@@ -55,12 +55,12 @@ Rectangle {
             placeholderText: qsTr("Database name")
             font.pixelSize: 16
             height: 40
-            background: Rectangle {
-                color: "white"
-                radius: 5
-                border.color: "lightgrey"
-                border.width: 1
-            }
+            // background: Rectangle {
+            //     color: "white"
+            //     radius: 5
+            //     border.color: "lightgrey"
+            //     border.width: 1
+            // }
         }
 
         TextField {
@@ -69,12 +69,12 @@ Rectangle {
             placeholderText: qsTr("Username")
             font.pixelSize: 16
             height: 40
-            background: Rectangle {
-                color: "white"
-                radius: 5
-                border.color: "lightgrey"
-                border.width: 1
-            }
+            // background: Rectangle {
+            //     color: "white"
+            //     radius: 5
+            //     border.color: "lightgrey"
+            //     border.width: 1
+            // }
         }
 
         TextField {
@@ -83,12 +83,12 @@ Rectangle {
             placeholderText: qsTr("Password")
             font.pixelSize: 16
             height: 40
-            background: Rectangle {
-                color: "white"
-                radius: 5
-                border.color: "lightgrey"
-                border.width: 1
-            }
+            // background: Rectangle {
+            //     color: "white"
+            //     radius: 5
+            //     border.color: "lightgrey"
+            //     border.width: 1
+            // }
         }
 
         Button {
@@ -97,12 +97,12 @@ Rectangle {
             width: 200
             height: 50
             font.pixelSize: 16
-            background: Rectangle {
-                color: "#6ab4e3"
-                radius: 5
-                border.color: "#6ab4e3"
-                border.width: 1
-            }
+            // background: Rectangle {
+            //     color: "#6ab4e3"
+            //     radius: 5
+            //     border.color: "#6ab4e3"
+            //     border.width: 1
+            // }
             onClicked: {
                 db.connectDataBase(textHost.text, textPort.text, textDatabase.text,
                                             textUser.text, textPassword.text)

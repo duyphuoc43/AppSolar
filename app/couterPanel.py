@@ -6,7 +6,8 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 import os
-
+import mysql.connector
+from mysql.connector import Error
 
 def base64ToImage(imageBase64):
     image_data = base64.b64decode(imageBase64)
@@ -24,6 +25,45 @@ def convertToBase64(image):
 
     return base64_image
 
+
+
+
+def insert_data(table_name, columns, data):
+    try:
+        # Kết nối đến cơ sở dữ liệu MySQL
+        connection = mysql.connector.connect(
+            host="127.0.0.1",
+            port = 3306,
+            database='appsolar',
+            user="duyphuoc",
+            password="bebiu2020"
+        )
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            columns_str = ', '.join(columns)
+            values_str = ', '.join(['%s'] * len(data))
+
+            # Câu lệnh SQL để chèn dữ liệu
+            insert_query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({values_str})"
+
+            # Thực thi câu lệnh SQL
+            cursor.executemany(insert_query, data)
+
+            # Xác nhận thay đổi
+            connection.commit()
+            print("Dữ liệu đã được chèn thành công")
+
+    except Error as e:
+        print(f"Lỗi khi kết nối đến MySQL: {e}")
+
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("Đã đóng kết nối đến MySQL")
+
 class ImageProcessor(QObject):
     imageProcessed = Signal(str)
     resultsProcessed = Signal(list)
@@ -36,11 +76,36 @@ class ImageProcessor(QObject):
         self.image_array = []
         self.image_information = []
         self.couterImage = 0
+        self.image_and_infor = []
 
-    def getIamgeArray():
-        return self.image_array
-    def getIamgeInfor():
-        return self.image_information
+    @Slot()
+    def insertStringPanel(self):
+        table_name = 'stringpanel'
+        columns = [ 'IdArea', 'LocationString', 'Image']
+        data = []
+        for image in self.image_array:
+            data.append(('1', 'block1', image),)
+        insert_data(table_name, columns, data)
+
+    @Slot()
+    def insertPanel(self):
+        table_name = 'stringpanel'
+        columns = [ 'Efficiency', 'Status', 'Location','Image','IdString']
+        data = ('', 'block1',self.image_array[0])
+        insert_data(table_name, columns, data)
+
+    def getIamgeArray(self):
+        imageArray = self.image_array
+        return imageArray
+
+    @Slot()
+    def getInforAndImage(self):
+        print(len(self.image_array))
+        print(len(self.image_information))
+        # print(len(self.image_information[0]))
+        self.image_and_infor = [self.image_array,self.image_information]
+        return self.image_and_infor
+
     @Slot(int)
     def back_and_next(self,checkChose):
         self.couterImage += int(checkChose)
@@ -117,13 +182,11 @@ class ImageProcessor(QObject):
                         'location' : 0
                     }
                     detections.append(detection)
-
             sorted_indices = np.lexsort((np.array([d['center_x'] for d in detections]), np.array([d['center_y'] for d in detections])))
             detections = [detections[i] for i in sorted_indices]
             for detection in detections:
                 detection['location'] = couter
                 couter += 1
-
 
             self.image_information.append(detections)
 

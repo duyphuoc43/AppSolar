@@ -19,9 +19,8 @@ class DataBase(QObject):
         super().__init__()
         self.connection = ''
         self.cursor = ''
-        self.image_array = ImageProcessor.getIamgeArray
-        self.image_information = ImageProcessor.getIamgeInfor
-
+        self.image_infor = []
+        self.image_processor = ImageProcessor()
     @Slot(str,int,str,str,str)
     def connectDataBase(self, hostText, portText, databaseText, userText, passwordText):
         self.connection = mysql.connector.connect(
@@ -58,6 +57,8 @@ class DataBase(QObject):
 
     @Slot()
     def check(self):
-        print(self.image_information,self.image_array)
+        self.image_infor = self.image_processor.getInforAndImage()
+        print(len(self.image_infor[0]))
+        return
 
 
