@@ -49,7 +49,7 @@ Item{
     }
     Detection{
         id : detectionPage
-        visible : false
+        visible : true
     }
 }
 

@@ -3,7 +3,31 @@ import psutil
 import GPUtil
 import platform
 import requests
-
+import subprocess
+def get_cpu_name():
+    if platform.system() == "Windows":
+        try:
+            command = "wmic cpu get name"
+            cpu_info = subprocess.check_output(command, shell=True).strip().decode().split('\n')
+            return cpu_info[1].strip()
+        except subprocess.CalledProcessError:
+            return "Unknown CPU"
+    elif platform.system() == "Darwin":
+        try:
+            command = "sysctl -n machdep.cpu.brand_string"
+            cpu_name = subprocess.check_output(command, shell=True).strip().decode()
+            return cpu_name
+        except subprocess.CalledProcessError:
+            return "Unknown CPU"
+    elif platform.system() == "Linux":
+        try:
+            command = "cat /proc/cpuinfo | grep 'model name' | head -1"
+            cpu_info = subprocess.check_output(command, shell=True).strip().decode()
+            cpu_name = cpu_info.split(":")[1].strip()
+            return cpu_name
+        except subprocess.CalledProcessError:
+            return "Unknown CPU"
+    return "Unknown CPU"
 
 class Home(QObject):
     resultsGet_cpu_percent = Signal(str)
@@ -15,21 +39,19 @@ class Home(QObject):
 
     @Slot()
     def get_cpu_info(self):
-        cpu_model = platform.processor()
-        total_cores = psutil.cpu_count(logical=True)
-        result = f"CPU Model: {cpu_model}\nTotal cores: {total_cores}"
-        return self.resultsGet_cpu_percent.emit(result)
+        return self.resultsGet_cpu_percent.emit(f"CPU Model: {get_cpu_name()}")
+    
     @Slot()
     def get_ram_info(self):
         svmem = psutil.virtual_memory()
-        result = f"Total: {svmem.total / (1024 ** 3):.2f} GB"
+        result = f"RAM: {svmem.total / (1024 ** 3):.2f} GB"
         return self.resultsGet_ram_percent.emit(result)
     @Slot()
     def get_gpu_info(self):
         gpus = GPUtil.getGPUs()
         gpu_info = []
         for gpu in gpus:
-            result = f"GPU Name: {gpu.name}\nTotal Memory: {gpu.memoryTotal}MB"
+            result = f"GPU Model: {gpu.name}\nTotal Memory: {gpu.memoryTotal}MB"
         return self.resultsGet_gpu_percent.emit(result)
     @Slot()
     def check_internet_connection(self):

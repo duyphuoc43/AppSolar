@@ -1,7 +1,8 @@
-import QtQuick
-import QtQuick.Window
-import QtQuick.Layouts
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+
 Rectangle {
     signal contactprofile
     signal contactdataBase
@@ -9,377 +10,374 @@ Rectangle {
     signal contactdetection
     signal contactlogout
     anchors.fill: parent
+    color: "#1e1e1e" // Đặt nền màu tối
+    
     Image {
-        id : imageBackgroud
+        id: imageBackgroud
         source: "../data/epc.jpg"
         fillMode: Image.Stretch
         anchors.fill: parent
-        opacity: 0.8
-        RowLayout{
-            anchors.fill: parent
-            anchors.centerIn: parent
-            ColumnLayout{
+        opacity: 1 // Giảm opacity của hình nền để hiển thị rõ hơn trên nền tối
+    }
+
+    RowLayout {
+        anchors.fill: parent
+        anchors.centerIn: parent
+
+        ColumnLayout {
+            width: 100
+            height: 800
+            Layout.leftMargin: 50
+            Rectangle {
                 width: 100
                 height: 800
-                Layout.leftMargin: 50
-                Rectangle{
-                    width: 100
-                    height: 800
-                    color : "#9943ca"
-                    radius: 10
-                    Column{
-                        spacing: 50
-                        anchors.centerIn: parent
-                        Button {
-                           text: "Profile"
-                           width: 80
-                           height: 80
-                           anchors.horizontalCenter: parent.horizontalCenter
-                           // font.pixelSize: 24
-                           onClicked: contactprofile()
+                color: "#262626"
+                radius: 10
+                opacity: 1
+                Column {
+                    spacing: 50
+                    anchors.centerIn: parent
 
-                        }
-                        Button {
-                           text: "DataBase"
-                           width: 80
-                           height: 80
-                           anchors.horizontalCenter: parent.horizontalCenter
-                           // font.pixelSize: 24
-                           onClicked: contactdataBase()
-                        }
-                        Button {
-                           text: "Couter Solar"
-                           width: 80
-                           height: 80
-                           anchors.horizontalCenter: parent.horizontalCenter
-                           // font.pixelSize: 24
-                           onClicked: contactcoutersolar()
-                        }
-                        Button {
-                           text: "Detection"
-                           width: 80
-                           height: 80
-                           anchors.horizontalCenter: parent.horizontalCenter
-                           // font.pixelSize: 24
-                           onClicked: contactdetection()
-                        }
-                        Button {
-                           text: "Logout"
-                           width: 80
-                           height: 80
-                           anchors.horizontalCenter: parent.horizontalCenter
-                           // font.pixelSize: 24
-                           onClicked: contactlogout()
-                        }
+                    Button {
+                        text: "Profile"
+                        width: 80
+                        height: 80
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        // font.pixelSize: 24
+                        font.family: "Arial"
+                        onClicked: contactprofile()
+                    }
+                    Button {
+                        text: "DataBase"
+                        width: 80
+                        height: 80
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        // font.pixelSize: 24
+                        font.family: "Arial"
+                        onClicked: contactdataBase()
+                    }
+                    Button {
+                        text: "Couter Solar"
+                        width: 80
+                        height: 80
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        // font.pixelSize: 24
+                        font.family: "Arial"
+                        onClicked: contactcoutersolar()
+                    }
+                    Button {
+                        text: "Detection"
+                        width: 80
+                        height: 80
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        // font.pixelSize: 24
+                        font.family: "Arial"
+                        onClicked: contactdetection()
+                    }
+                    Button {
+                        text: "Logout"
+                        width: 80
+                        height: 80
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        // font.pixelSize: 24
+                        font.family: "Arial"
+                        onClicked: contactlogout()
                     }
                 }
             }
-            Rectangle{
-                width: 1700
-                height: 800
-                color : "#f7f8f8"
-                border.color: "black"
-                border.width: 5
-                radius : 8
-                ColumnLayout{
-                    anchors.centerIn: parent
-                    Rectangle{
-                        width: 1600
-                        height: 400
-                        color : "transparent"
-                        border.color: "black"
-                        border.width: 5
-                        radius : 20
-                        Row{
-                            anchors.centerIn: parent
-                            Rectangle{
-                                width: 790
-                                height: 380
-                                color : "#6c63e9"
-                                border.color: "transparent"
-                                border.width: 5
-                                radius : 20
+        }
 
-                                Column{
-                                    anchors.centerIn: parent
-                                    Rectangle{
-                                        id : profile
-                                        width: 760
-                                        height: 80
-                                        radius : 20
-                                        color: "yellow"
-                                        RowLayout{
-                                            Column{
-                                                Text {
-                                                    id: info
-                                                    text: qsTr("Name : Duy Phước")
-                                                }
-                                                Text {
-                                                    id: position
-                                                    text: qsTr("Position : Engineer")
-                                                }
-                                            }
-                                            // Image {
-                                            //     id: imagePerson
-                                            //     source: "file"
-                                            // }
-                                        }
-                                    }
-                                    Rectangle{
-                                        width: 760
-                                        height: 280
-                                        color : "transparent"
-                                        Row{
-                                            anchors.centerIn: parent
-                                            spacing: 20
-                                            Rectangle{
-                                                id : checkGPUandCPU
-                                                width: 370
-                                                height: 260
-                                                color : "#65ebf0"
-                                                radius : 20
-                                                ColumnLayout{
-                                                    anchors.fill: parent
-                                                    spacing : 10
-                                                    Text {
-                                                        id : textCPU
-                                                        text: "Thông tin CPU"
-                                                    }
-                                                    Text {
-                                                        id : textGPU
-                                                        text: "Thông tin GPU"
-                                                    }
-                                                    Text {
-                                                        id : textRAM
-                                                        text: "Thông tin RAM"
+        Rectangle {
+            width: 1700
+            height: 800
+            color: "#333333"
+            border.color: "#444444"
+            border.width: 2
+            radius: 8
+            opacity: 0.98
+            ColumnLayout {
+                anchors.centerIn: parent
 
-                                                    }
-                                                }
+                Rectangle {
+                    width: 1600
+                    height: 400
+                    color: "transparent"
+                    border.color: "#444444"
+                    border.width: 2
+                    radius: 20
+
+                    Row {
+                        anchors.centerIn: parent
+
+                        Rectangle {
+                            width: 790
+                            height: 380
+                            color: "#444444"
+                            border.color: "transparent"
+                            radius: 20
+
+                            Column {
+                                anchors.centerIn: parent
+
+                                Rectangle {
+                                    id: profile
+                                    width: 760
+                                    height: 80
+                                    radius: 20
+                                    color: "#555555"
+
+                                    RowLayout {
+                                        Column {
+                                            Text {
+                                                id: info
+                                                text: qsTr("Name: Duy Phước")
+                                                color: "#FFFFFF"
+                                                font.pixelSize: 24
+                                                font.family: "Arial"
                                             }
-                                            Rectangle{
-                                                id : checkDataBase
-                                                width: 370
-                                                height: 260
-                                                color : "#65ebf0"
-                                                radius : 20
-                                                Text {
-                                                    text: "Thông tin DataBase"
-                                                    anchors.centerIn: parent
-                                                }
+                                            Text {
+                                                id: position
+                                                text: qsTr("Position: Engineer")
+                                                color: "#FFFFFF"
+                                                font.pixelSize: 24
+                                                font.family: "Arial"
                                             }
                                         }
                                     }
                                 }
-                            }
-                            Rectangle{
-                                width: 790
-                                height: 380
-                                color : "transparent"
 
-                                DataBase{
-                                    id : dataBase
-                                    visible : false
+                                Rectangle {
+                                    width: 760
+                                    height: 280
+                                    color: "transparent"
 
-                                        onButtonClicked: {
-                                            dataBase.visible = false
-                                        }
+                                    Row {
+                                        anchors.centerIn: parent
+                                        spacing: 20
 
-                                }
+                                        Rectangle {
+                                            id: checkGPUandCPU
+                                            width: 370
+                                            height: 260
+                                            color: "#666666"
+                                            radius: 20
 
-                                GridLayout {
-                                    visible : !dataBase.visible
-                                    columnSpacing: 50
-                                    rowSpacing: 50
-                                    anchors.centerIn: parent
-                                    columns: 2
-                                    rows: 2
-                                    Rectangle {
-                                        Layout.columnSpan: 1
-                                        Layout.rowSpan: 1
-                                        width: 300
-                                        height: 150
-                                        color: "#65ebf0"
-                                        radius : 20
-                                        Text {
-                                            text: "Kết nối DataBase"
-                                            anchors.centerIn: parent
-                                        }
-                                        MouseArea {
-                                            anchors.fill: parent 
-                                            onClicked: {
-                                                dataBase.visible= true
+                                            ColumnLayout {
+                                                anchors.fill: parent
+                                                spacing: 10
+
+                                                Text {
+                                                    id: textCPU
+                                                    text: "Thông tin CPU"
+                                                    color: "#FFFFFF"
+                                                    font.pixelSize: 15
+                                                    font.family: "Arial"
+                                                }
+                                                Text {
+                                                    id: textGPU
+                                                    text: "Thông tin GPU"
+                                                    color: "#FFFFFF"
+                                                    font.pixelSize: 15
+                                                    font.family: "Arial"
+                                                }
+                                                Text {
+                                                    id: textRAM
+                                                    text: "Thông tin RAM"
+                                                    color: "#FFFFFF"
+                                                    font.pixelSize: 20
+                                                    font.family: "Arial"
+                                                }
                                             }
                                         }
-                                    }
 
-                                    Rectangle {
-                                        Layout.columnSpan: 1
-                                        Layout.rowSpan: 1
-                                        width: 300
-                                        height: 150
-                                        color: "#65ebf0"
-                                        radius : 20
-                                        Text {
-                                            text: "Tạo Account"
-                                            anchors.centerIn: parent
-                                        }
-                                    }
-                                    Rectangle {
-                                        Layout.columnSpan: 1
-                                        Layout.rowSpan: 1
-                                        width: 300
-                                        height: 150
-                                        color: "#65ebf0"
-                                        radius: 20
+                                        Rectangle {
+                                            id: checkDataBase
+                                            width: 370
+                                            height: 260
+                                            color: "#666666"
+                                            radius: 20
 
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                home.check_internet_connection()
+                                            Text {
+                                                text: "Thông tin DataBase"
+                                                color: "#FFFFFF"
+                                                font.pixelSize: 20
+                                                font.family: "Arial"
+                                                anchors.centerIn: parent
                                             }
                                         }
-                                        Text {
-                                            id: textInternet
-                                            text: "Kiểm tra kết nối mạng"
-                                            anchors.centerIn: parent
-                                        }
-                                    }
-                                    Rectangle {
-                                        Layout.columnSpan: 1
-                                        Layout.rowSpan: 1
-                                        width: 300
-                                        height: 150
-                                        color: "#65ebf0"
-                                        radius : 20
-                                        Text {
-                                            text: "Lịch sử"
-                                            anchors.centerIn: parent
-                                        }
-
                                     }
                                 }
                             }
                         }
 
-                    }
-                    Rectangle{
-                        width: 1600
-                        height: 300
-                        color : "transparent"
-                        radius : 20
-                        RowLayout{
-                            anchors.centerIn: parent
-                            spacing: 134
-                            
-                            Rectangle {
-                                width: 300
-                                height: 300
-                                color: "#65ebf0"
-                                border.color: "transparent"
-                                border.width: 5
-                                radius: 20
+                        Rectangle {
+                            width: 790
+                            height: 380
+                            color: "transparent"
+
+                            DataBase {
+                                id: dataBase
+                                visible: false
+
+                                onButtonClicked: {
+                                    dataBase.visible = false
+                                }
+                            }
+
+                            GridLayout {
+                                visible: !dataBase.visible
+                                columnSpacing: 50
+                                rowSpacing: 50
+                                anchors.centerIn: parent
+                                columns: 2
+                                rows: 2
 
                                 Rectangle {
-                                    id: onIndicator
-                                    width: 150
+                                    Layout.columnSpan: 1
+                                    Layout.rowSpan: 1
+                                    width: 300
                                     height: 150
-                                    anchors.centerIn: parent
-                                    radius: 100
-                                    color: "green"
-                                    border.color: "yellow"
-                                    border.width: 5
-                                    visible: true
+                                    color: "#666666"
+                                    radius: 20
 
                                     Text {
-                                        text: "ON"
-                                        font.pointSize: 24
-                                        font.bold: true
-                                        color: "#000000"
+                                        text: "Kết nối DataBase"
+                                        color: "#FFFFFF"
+                                        font.pixelSize: 20
+                                        font.family: "Arial"
                                         anchors.centerIn: parent
-                                        horizontalAlignment: Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
                                     }
-                                }
-
-                                // MouseArea {
-                                //     anchors.fill: parent
-                                //     onClicked: {
-                                //         onIndicator.visible = !onIndicator.visible;
-                                //     }
-                                // }
-                            }
-                            Rectangle {
-                                width: 300
-                                height: 300
-                                color: "#65ebf0"
-                                border.color: "transparent"
-                                border.width: 5
-                                radius: 20
-
-                                Rectangle {
-                                    width: 150
-                                    height: 150
-                                    anchors.centerIn: parent
-                                    radius: 75
-                                    color: "#ffffff"
-
                                     MouseArea {
                                         anchors.fill: parent
-
-                                        Text {
-                                            text: "LOCK"
-                                            font.pointSize: 24
-                                            font.bold: true
-                                            color: "#000000"
-                                            anchors.centerIn: parent
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
+                                        onClicked: {
+                                            dataBase.visible = true
                                         }
                                     }
                                 }
+
+                                Rectangle {
+                                    Layout.columnSpan: 1
+                                    Layout.rowSpan: 1
+                                    width: 300
+                                    height: 150
+                                    color: "#666666"
+                                    radius: 20
+
+                                    Text {
+                                        text: "Tạo Account"
+                                        color: "#FFFFFF"
+                                        font.pixelSize: 20
+                                        font.family: "Arial"
+                                        anchors.centerIn: parent
+                                    }
+                                }
+
+                                Rectangle {
+                                    Layout.columnSpan: 1
+                                    Layout.rowSpan: 1
+                                    width: 300
+                                    height: 150
+                                    color: "#666666"
+                                    radius: 20
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            home.check_internet_connection()
+                                        }
+                                    }
+                                    Text {
+                                        id: textInternet
+                                        text: "Kiểm tra kết nối mạng"
+                                        color: "#FFFFFF"
+                                        font.pixelSize: 20
+                                        font.family: "Arial"
+                                        anchors.centerIn: parent
+                                    }
+                                }
+
+                                Rectangle {
+                                    Layout.columnSpan: 1
+                                    Layout.rowSpan: 1
+                                    width: 300
+                                    height: 150
+                                    color: "#666666"
+                                    radius: 20
+
+                                    Text {
+                                        text: "Lịch sử"
+                                        color: "#FFFFFF"
+                                        font.pixelSize: 20
+                                        font.family: "Arial"
+                                        anchors.centerIn: parent
+                                    }
+                                }
                             }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    width: 1600
+                    height: 300
+                    color: "transparent"
+                    radius: 20
+
+                    RowLayout {
+                        anchors.centerIn: parent
+                        spacing: 134
+
+                        Rectangle {
+                            width: 300
+                            height: 300
+                            color: "#666666"
+                            border.color: "transparent"
+                            border.width: 5
+                            radius: 20
+
                             Rectangle {
-                                width: 300
-                                height: 300
-                                color: "#65ebf0"
-                                border.color: "transparent"
+                                id: onIndicator
+                                width: 150
+                                height: 150
+                                anchors.centerIn: parent
+                                radius: 100
+                                color: "green"
+                                border.color: "yellow"
                                 border.width: 5
-                                radius: 20
+                                visible: true
 
                                 Text {
-                                    text: "24°C"
-                                    font.pointSize: 48
+                                    text: "ON"
+                                    font.pointSize: 24
                                     font.bold: true
-                                    color: "#ffffff"
+                                    color: "#000000"
                                     anchors.centerIn: parent
                                     horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
                                 }
                             }
+                        }
+
+                        Rectangle {
+                            width: 300
+                            height: 300
+                            color: "#666666"
+                            border.color: "transparent"
+                            border.width: 5
+                            radius: 20
+
                             Rectangle {
-                                width: 300
-                                height: 300
-                                color: "#65ebf0"
-                                border.color: "transparent"
-                                border.width: 5
-                                radius: 20
+                                width: 150
+                                height: 150
+                                anchors.centerIn: parent
+                                radius: 75
+                                color: "#ffffff"
 
-                                Rectangle {
-                                    width: 150
-                                    height: 150
-                                    anchors.centerIn: parent
-                                    radius: 75
-                                    color: "#ffffff"
-
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        onClicked: {
-                                            console.log("Logout clicked")
-                                        }
-                                    }
+                                MouseArea {
+                                    anchors.fill: parent
 
                                     Text {
-                                        text: "LOGOUT"
+                                        text: "LOCK"
                                         font.pointSize: 24
                                         font.bold: true
                                         color: "#000000"
@@ -387,6 +385,59 @@ Rectangle {
                                         horizontalAlignment: Text.AlignHCenter
                                         verticalAlignment: Text.AlignVCenter
                                     }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            width: 300
+                            height: 300
+                            color: "#666666"
+                            border.color: "transparent"
+                            border.width: 5
+                            radius: 20
+
+                            Text {
+                                text: "24°C"
+                                font.pointSize: 48
+                                font.bold: true
+                                color: "#FFFFFF"
+                                anchors.centerIn: parent
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
+
+                        Rectangle {
+                            width: 300
+                            height: 300
+                            color: "#666666"
+                            border.color: "transparent"
+                            border.width: 5
+                            radius: 20
+
+                            Rectangle {
+                                width: 150
+                                height: 150
+                                anchors.centerIn: parent
+                                radius: 75
+                                color: "#ffffff"
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        console.log("Logout clicked")
+                                    }
+                                }
+
+                                Text {
+                                    text: "LOGOUT"
+                                    font.pointSize: 24
+                                    font.bold: true
+                                    color: "#000000"
+                                    anchors.centerIn: parent
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
                                 }
                             }
                         }
@@ -395,6 +446,7 @@ Rectangle {
             }
         }
     }
+
     Component.onCompleted: {
         home.get_cpu_info()
         home.get_ram_info()
