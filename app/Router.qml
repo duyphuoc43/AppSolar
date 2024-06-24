@@ -46,10 +46,14 @@ Item{
             couterPage.visible = false;
             homePage.visible = true;
         }
+        onMoveToDetectionPage: {
+            couterPage.visible = false;
+            detectionPage.visible = true;
+        }
     }
     Detection{
         id : detectionPage
-        visible : true
+        visible : false
     }
 }
 

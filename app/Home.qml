@@ -33,7 +33,7 @@ Rectangle {
                 height: 800
                 color: "#262626"
                 radius: 10
-                opacity: 1
+                opacity: 0.98
                 Column {
                     spacing: 50
                     anchors.centerIn: parent
@@ -427,6 +427,7 @@ Rectangle {
                                     anchors.fill: parent
                                     onClicked: {
                                         console.log("Logout clicked")
+                                        contactlogout()
                                     }
                                 }
 

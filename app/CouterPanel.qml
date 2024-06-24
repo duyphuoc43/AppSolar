@@ -8,7 +8,7 @@ import Qt.labs.platform
 Rectangle {
 
     signal back_home()
-
+    signal moveToDetectionPage()
     id: root
     anchors.fill: parent
     color: "#333333"  // Màu nền tối
@@ -34,15 +34,17 @@ Rectangle {
         anchors.fill: parent
         Rectangle {
             width: 300
-            height: 1080
+            height: 900
             color: "#444444"  // Màu nền tối hơn
             radius: 20
             Button{
                 id: backHome
-                width: 100
+                width: parent.width
                 height: 60
                 onClicked: back_home()
                 text: "Back Home"
+                font.pixelSize: 24
+                font.family: "Arial"
             }
             ColumnLayout {
                 anchors.centerIn: parent
@@ -50,18 +52,20 @@ Rectangle {
                 Rectangle {
                     width: 200
                     height: 50
+                    color : "#444444"
 
                     Row {
+                        spacing: 6
                         Button {
                             text: "Chọn Ảnh"
                             onClicked: fileDialog.open()
-                            width: 100
+                            width: 97
                             height: 50
                         }
                         Button {
                             text: "Chọn Thư Mục"
                             onClicked: folderDialog.open()
-                            width: 100
+                            width: 97
                             height: 50
                         }
                     }
@@ -70,6 +74,7 @@ Rectangle {
                 Rectangle {
                     width: 200
                     height: 50
+                    color : "#444444"
                     Button {
                         text: "Chọn Mô Hình"
                         onClicked: fileModel.open()
@@ -81,9 +86,22 @@ Rectangle {
                 Rectangle {
                     width: 200
                     height: 50
+                    color : "#444444"
                     Button {
-                        text: "Phát Hiện"
-                        onClicked: imageProcessor.detection()
+                        text: "Chuẩn đoán lỗi"
+                        onClicked: imageProcessor.detection_string()
+                        width: 200
+                        height: 50
+                    }
+                }
+
+                Rectangle {
+                    width: 200
+                    height: 50
+                    color : "#444444"
+                    Button {
+                        text: "Chuẩn đoán hiệu suất"
+                        onClicked: moveToDetectionPage()
                         width: 200
                         height: 50
                     }
@@ -91,6 +109,7 @@ Rectangle {
                 Rectangle {
                     width: 200
                     height: 50
+                    color : "#444444"
                     Button {
                         text: "Lưu vào DataBase"
                         onClicked: imageProcessor.insertStringPanel()
@@ -100,14 +119,15 @@ Rectangle {
                 }
                 Rectangle {
                     width: 200
-                    height: 600
+                    height: 200
                     border.color: "white"
                     border.width: 2
                     radius: 20
                     Text {
-                        text: "Thông tin của pin mặt trời"
+                        id: information
+                        text: "Thông tin pin mặt trời:"
                         anchors.centerIn: parent
-                        color: "white"
+                        color: "Black"
                     }
                 }
             }
@@ -156,18 +176,24 @@ Rectangle {
                                 hoverEnabled: true
                                 onEntered: {
                                     textInfo.visible = true
-                                    information.text = "Trạng thái của pin mặt trời:" +
-                                                      '\nVị trí: ' + location +
-                                                      "\nClass ID: " + class_id +
-                                                      "\nĐộ chắc chắn: " + confidence
+                                    information.text = "Trạng thái của pin mặt trời:"
+                                                + '\nVị trí: ' + location
+                                                + "\nClass ID: " +
+                                        (class_id === 0 ? "Hotspot" : class_id === 1 ? "Hotspots" :
+                                            class_id === 2 ? "Normal" : "Shadow")
+                                                + "\nĐộ chắc chắn: " + confidence
+                                                // + "\nHiệu suất: " + efficiency
+                                    imageProcessor.show_panel(location-1)
+
                                 }
                                 onExited: textInfo.visible = false
 
                                 Text {
                                     id: textInfo
-                                    text: 'Vị trí: ' + location + "Class ID: " + class_id + "\nĐộ chắc chắn: " + confidence
                                     color: "white"
                                     visible: false
+                                    font.pixelSize: 24
+                                    font.family: "Arial"
                                     anchors {
                                         top: parent.top
                                         left: parent.left
@@ -183,38 +209,30 @@ Rectangle {
                         text: "Quay Lại"
                         onClicked: imageProcessor.back_and_next(-1)
                         width: 600
-                        height: 30
+                        height: 50
+                        font.pixelSize: 24
+                        font.family: "Arial"
                     }
 
                     Button {
                         text: "Tiếp Theo"
                         onClicked: imageProcessor.back_and_next(1)
                         width: 600
-                        height: 30
+                        height: 50
+                        font.pixelSize: 24
+                        font.family: "Arial"
                     }
                 }
             }
         }
 
         Rectangle {
-            width: 300
+            width: 400
             height: 900
-            color: "#444444"  // Màu nền tối hơn
-            Column {
-                Text {
-                    id: information
-                    text: "Trạng thái của pin mặt trời:"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.bold: true
-                    font.pixelSize: 18
-                    color: "white"
-                }
-                // Text {
-                //     text: "Thông tin về pin mặt trời:"
-                //     anchors.horizontalCenter: parent.horizontalCenter
-                //     font.pixelSize: 16
-                //     color: "white"
-                // }
+            color: "#444444"
+            Image {
+                id: imagePanel
+                anchors.fill: parent
             }
         }
     }
@@ -233,6 +251,9 @@ Rectangle {
             for (var i = 0 ; i <  list.length ; i++ ) {
                 detectionsModel.append(list[i])
             }
+        }
+        function onShowImagePanel(base64_image) {
+            imagePanel.source = "data:image/png;base64," + base64_image
         }
     }
 }
