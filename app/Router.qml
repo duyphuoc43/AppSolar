@@ -30,10 +30,10 @@ Item{
             homePage.visible = false;
             couterPage.visible = true;
         }
-        onContactdetection: {
-            detectionPage.visible = true;
-            homePage.visible = false;
-        }
+        // onContactdetection: {
+        //     detectionPage.visible = true;
+        //     homePage.visible = false;
+        // }
         onContactlogout: {
             homePage.visible = false;
             loginPage.visible = true;

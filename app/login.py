@@ -7,7 +7,7 @@ class Login(QObject):
 
     @Slot(str, str)
     def login(self, username, password):
-        if username == "1" and password == "1":
+        if username == "phuoc" and password == "1":
             self.loginResult.emit(True)
         else:
             self.loginResult.emit(False)

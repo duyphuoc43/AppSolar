@@ -17,7 +17,7 @@ Rectangle {
         source: "../data/epc.jpg"
         fillMode: Image.Stretch
         anchors.fill: parent
-        opacity: 1 // Giảm opacity của hình nền để hiển thị rõ hơn trên nền tối
+        opacity: 1
     }
 
     RowLayout {
@@ -57,7 +57,7 @@ Rectangle {
                         onClicked: contactdataBase()
                     }
                     Button {
-                        text: "Couter Solar"
+                        text: "Detection"
                         width: 80
                         height: 80
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -66,7 +66,7 @@ Rectangle {
                         onClicked: contactcoutersolar()
                     }
                     Button {
-                        text: "Detection"
+                        text: "History"
                         width: 80
                         height: 80
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -128,6 +128,7 @@ Rectangle {
 
                                     RowLayout {
                                         Column {
+
                                             Text {
                                                 id: info
                                                 text: qsTr("Name: Duy Phước")
@@ -398,7 +399,7 @@ Rectangle {
                             radius: 20
 
                             Text {
-                                text: "24°C"
+                                text: "35°C"
                                 font.pointSize: 48
                                 font.bold: true
                                 color: "#FFFFFF"

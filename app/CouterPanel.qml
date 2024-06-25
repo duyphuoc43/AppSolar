@@ -12,7 +12,7 @@ Rectangle {
     id: root
     anchors.fill: parent
     color: "#333333"  // Màu nền tối
-
+    property string efficiency: "unknow"
     FileDialog {
         id: fileDialog
         file: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
@@ -29,7 +29,12 @@ Rectangle {
         nameFilters: ["*.pt"]
         onAccepted: imageProcessor.process_model(file)
     }
-
+    FileDialog {
+        id: fileModel2
+        file: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        nameFilters: ["*.pt"]
+        onAccepted: imageProcessor.process_model2(file)
+    }
     RowLayout {
         anchors.fill: parent
         Rectangle {
@@ -64,7 +69,10 @@ Rectangle {
                         }
                         Button {
                             text: "Chọn Thư Mục"
-                            onClicked: folderDialog.open()
+                            onClicked: {
+                                // imageProcessor.resetPara()
+                                folderDialog.open()
+                            }
                             width: 97
                             height: 50
                         }
@@ -76,7 +84,7 @@ Rectangle {
                     height: 50
                     color : "#444444"
                     Button {
-                        text: "Chọn Mô Hình"
+                        text: "Chọn Mô Hình Lỗi"
                         onClicked: fileModel.open()
                         width: 200
                         height: 50
@@ -94,18 +102,29 @@ Rectangle {
                         height: 50
                     }
                 }
-
+                Rectangle {
+                    width: 200
+                    height: 50
+                    color : "#444444"
+                    Button {
+                        text: "Chọn Mô Hình HS"
+                        onClicked: fileModel.open()
+                        width: 200
+                        height: 50
+                    }
+                }
                 Rectangle {
                     width: 200
                     height: 50
                     color : "#444444"
                     Button {
                         text: "Chuẩn đoán hiệu suất"
-                        onClicked: moveToDetectionPage()
+                        onClicked: imageProcessor.detection_panel()
                         width: 200
                         height: 50
                     }
                 }
+
                 Rectangle {
                     width: 200
                     height: 50
@@ -117,6 +136,7 @@ Rectangle {
                         height: 50
                     }
                 }
+
                 Rectangle {
                     width: 200
                     height: 200
@@ -164,7 +184,8 @@ Rectangle {
                             required property int location
 
                             color: "transparent"
-                            border.color: class_id > 1 ? "red" : "green"
+
+                            border.color: class_id === 2 ? "green" : "yellow"
                             border.width: 2
                             x: x_box
                             y: y_box
@@ -176,27 +197,45 @@ Rectangle {
                                 hoverEnabled: true
                                 onEntered: {
                                     textInfo.visible = true
+
                                     information.text = "Trạng thái của pin mặt trời:"
                                                 + '\nVị trí: ' + location
-                                                + "\nClass ID: " +
+                                                + "\nClass: " +
                                         (class_id === 0 ? "Hotspot" : class_id === 1 ? "Hotspots" :
                                             class_id === 2 ? "Normal" : "Shadow")
                                                 + "\nĐộ chắc chắn: " + confidence
-                                                // + "\nHiệu suất: " + efficiency
+                                                + "\nHiệu suất: " + root.efficiency + "%"
                                     imageProcessor.show_panel(location-1)
 
                                 }
                                 onExited: textInfo.visible = false
-
-                                Text {
-                                    id: textInfo
-                                    color: "white"
-                                    visible: false
-                                    font.pixelSize: 24
-                                    font.family: "Arial"
+                                Row{
                                     anchors {
                                         top: parent.top
                                         left: parent.left
+                                    }
+                                    Text {
+                                        id: textInfo
+                                        color: "white"
+                                        visible: false
+                                        font.pixelSize: 24
+                                        font.family: "Arial"
+                                        // anchors {
+                                        //     top: parent.top
+                                        //     left: parent.left
+                                        // }
+                                    }
+                                    Text {
+                                        id: textEfficiency
+                                        color: "white"
+                                        visible: textInfo.visible
+                                        font.pixelSize: 24
+                                        font.family: "Arial"
+                                        // anchors {
+                                        //     top: parent.top
+                                        //     left: parent.left
+                                        // }
+                                        text : "\nHiệu suất: " + root.efficiency + "%"
                                     }
                                 }
                             }
@@ -234,11 +273,40 @@ Rectangle {
                 id: imagePanel
                 anchors.fill: parent
             }
+
+            Repeater {
+                id: repeaterRectanglePanel
+                model: detectionsModelPanel
+                delegate: Rectangle {
+                    required property real x_box
+                    required property real y_box
+                    required property real w_box
+                    required property real h_box
+                    required property real confidence
+                    required property int class_id
+                    required property int location
+
+                    color: "transparent"
+                    border.color: "Black"
+                    border.width: 2
+                    x: x_box
+                    y: y_box
+                    width: w_box
+                    height: h_box
+                    Text{
+                        text : (class_id === 0 ? "Hotspot" : class_id === 1 ? "Hotspots" : "Shadow")
+                        anchors.centerIn: parent
+                    }
+                }
+            }
         }
     }
 
     ListModel {
         id: detectionsModel
+    }
+    ListModel {
+        id: detectionsModelPanel
     }
 
     Connections {
@@ -246,14 +314,28 @@ Rectangle {
         function onImageProcessed(base64_image) {
             imageView.source = "data:image/png;base64," + base64_image
         }
+
         function onResultsProcessed(list) {
             detectionsModel.clear()
             for (var i = 0 ; i <  list.length ; i++ ) {
                 detectionsModel.append(list[i])
             }
         }
+
         function onShowImagePanel(base64_image) {
             imagePanel.source = "data:image/png;base64," + base64_image
         }
+
+        function onResultsProcessedPanel(list) {
+            detectionsModelPanel.clear()
+            for (var i = 0 ; i <  list.length ; i++ ) {
+                detectionsModelPanel.append(list[i])
+            }
+        }
+        function onResultsEfficiency(ketqua) {
+            console.error(ketqua)
+            root.efficiency = ketqua
+        }
     }
+
 }

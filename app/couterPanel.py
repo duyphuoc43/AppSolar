@@ -89,12 +89,14 @@ def insert_data(table_name, columns, data):
 class ImageProcessor(QObject):
     imageProcessed = Signal(str)
     resultsProcessed = Signal(list)
+    resultsProcessedPanel = Signal(list)
     showImagePanel = Signal(str)
+    resultsEfficiency = Signal(str)
     def __init__(self):
         super().__init__()
         self.path_image = ''
         self.imageBase64 = ''
-        self.path_model = 'C:/Users/duyph/Desktop/AppPython/AppSolar/data'
+        self.path_model = ""
         self.path_folder = ''
 
         self.image_information = []
@@ -103,8 +105,10 @@ class ImageProcessor(QObject):
         self.panels = []
         self.general_images_panel = []
         self.general_infor_panel = []
-
+        self.general_images_panel_erro = []
+        self.general_infor_panel_erro = []
         self.indexImage = 0
+        self.path_model2 = ''
 
     @Slot()
     def insertStringPanel(self):
@@ -132,15 +136,18 @@ class ImageProcessor(QObject):
             self.couterImage = int(len(self.images)-1)
 
         image_base64 = convertToBase64(self.images[self.couterImage])
+
         self.indexImage = self.couterImage
         self.imageProcessed.emit(image_base64)
+
         return self.resultsProcessed.emit(self.image_information[self.couterImage])
+
     @Slot(str)
     def process_folder(self, path_folder):
         # Đọc ảnh
         path_folder = path_folder[8:]
         self.path_folder = path_folder
-
+        self.images = []
         for file in os.listdir(path_folder):
             valid_extensions = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
             if file.lower().endswith(valid_extensions):  # Kiểm tra đuôi file
@@ -166,11 +173,16 @@ class ImageProcessor(QObject):
         # Đọc mô hình
         self.path_model = model_path[8:]
         return
-
+    @Slot(str)
+    def process_model2(self, model_path):
+        # Đọc mô hình
+        self.path_model2 = model_path[8:]
+        return
     @Slot(result=str)
     def detection_string(self):
         if not self.path_image or not self.path_model:
             print("Path to image or model is not set")
+            # self.path_model = "C:/Users/duyph/Desktop/AppPython/AppSolar/data/images - Copy/best_9e.pt"
 
         model = YOLO(self.path_model)
 
@@ -193,7 +205,7 @@ class ImageProcessor(QObject):
                         'h_box' : y_max-y_min,
                         'center_x' : x_min + (x_max-x_min)/2,
                         'center_y' : y_min + (y_max-y_min)/2,
-                        'confidence': confidence,
+                        'confidence': round(confidence, 2),
                         'class_id': class_id,
                         'location' : 0,
                         'efficiency' : efficiency
@@ -207,60 +219,104 @@ class ImageProcessor(QObject):
 
             self.image_information.append(detections)
 
-        self.general_images_panel = []
-        self.general_infor_panel = []
+        general_images_panel = []
+        general_infor_panel = []
         for i in range(len(self.images)):
             image = self.images[i]
             detections = self.image_information[i]
             image_panels = []
             infor_panels = []
+            images_panel_erro = []
             for detection in detections:
                 x_min = detection['x_box']
                 y_min = detection['y_box']
                 x_max = x_min + detection['w_box']
                 y_max = y_min + detection['h_box']
                 cropped_image = image[int(y_min):int(y_max), int(x_min):int(x_max)]
-                image_panels.append(cropped_image)
+
+                height, width, _ = np.array(cropped_image).shape
+                if width > height:
+                    cropped_image = cv2.rotate(cropped_image, cv2.ROTATE_90_CLOCKWISE)
+                resized_image = cv2.resize(cropped_image, (300, 900))
+                image_panels.append(resized_image)
                 infor_panels.append(detection)
 
-            self.general_images_panel.append(image_panels)
-            self.general_infor_panel.append(infor_panels)
+                if detection['class_id'] != 2:
+                    images_panel_erro.append(cropped_image)
+            # self.general_images_panel_erro.append(images_panel_erro)
+
+            general_images_panel.append(image_panels)
+            general_infor_panel.append(infor_panels)
+            self.general_images_panel = general_images_panel
+            self.general_infor_panel = general_infor_panel
 
         return self.resultsProcessed.emit(self.image_information[0])
 
-    @Slot()
+# *************************************************************************************************************
+    @Slot(result=str)
     def detection_panel(self):
-        self.general_images_panel = []
-        self.general_infor_panel = []
-        for i in range(len(self.images)):
-            image = self.images[i]
-            detections = self.image_information[i]
-            image_panels = []
-            infor_panels = []
-            for detection in detections:
-                x_min = detection['x_box']
-                y_min = detection['y_box']
-                x_max = x_min + detection['w_box']
-                y_max = y_min + detection['h_box']
-                cropped_image = image[int(y_min):int(y_max), int(x_min):int(x_max)]
-                image_panels.append(cropped_image)
-                infor_panels.append(detection)
+        # self.path_model2 = "C:/Users/duyph/Desktop/AppPython/AppSolar/data/images - Copy/faultbest1.pt"
+        # Tải mô hình YOLO
+        model = YOLO(self.path_model2)
 
-            self.general_images_panel.append(image_panels)
-            self.general_infor_panel.append(infor_panels)
+        # Lưu trữ kết quả phân tích từng hình ảnh
+        images_results = []
+        for images_erro in self.general_images_panel:
+            results = model(images_erro)
+            images_results.append(results)
 
-            print(len(image_panels) , len(infor_panels))
+        # Lưu trữ các phát hiện trên từng hình ảnh
+        images_detections = []
+        for results_image in images_results:
+            image_detections = []
 
-        # print(len(general_images_panel) , len(general_infor_panel))
-    # return self.resultsProcessed.emit(self.image_information[0])
+            for result in results_image:
+                detections = []
+
+                if result.boxes is not None:
+                    for box in result.boxes:
+                        x_min, y_min, x_max, y_max = [coord.item() for coord in box.xyxy[0]]
+                        confidence = box.conf.item()
+                        class_id = int(box.cls.item())
+                        efficiency = 100
+                        # location = int(couter)
+                        detection = {
+                            'x_box' : x_min,
+                            'y_box' : y_min,
+                            'w_box' : x_max - x_min,
+                            'h_box' : y_max - y_min,
+                            'center_x' : x_min + (x_max - x_min) / 2,
+                            'center_y' : y_min + (y_max - y_min) / 2,
+                            'confidence': round(confidence, 2),
+                            'class_id': class_id,
+                            'location' : 0,
+                            'efficiency' : efficiency
+                        }
+                        detections.append(detection)
+                image_detections.append(detections)
+            images_detections.append(image_detections)
+
+        # Lưu trữ thông tin phân tích tổng quát
+        self.general_infor_panel_erro = images_detections
+
+        return
 
     @Slot(int)
     def show_panel(self,index):
         image_panel = self.general_images_panel[self.indexImage][index]
-
-        height, width, _ = np.array(image_panel).shape
-
-        if width > height:
-            image_panel = cv2.rotate(image_panel, cv2.ROTATE_90_CLOCKWISE)
         image_panel = convertToBase64_panel(image_panel)
+        efficiency = 100
+        # print(self.indexImage,index, len(self.general_infor_panel_erro[self.indexImage][index]))
+
+        for detection in self.general_infor_panel_erro[self.indexImage][index]:
+            if (detection['class_id'] == 1):
+                efficiency -= 100*(1/3)
+            if (detection['class_id'] == 0):
+                efficiency -= 100*(1/6)
+            if (detection['class_id'] == 2):
+                efficiency -= (detection['w_box'] *  detection['h_box']) / (900*300) *100
+
+        self.resultsProcessedPanel.emit(self.general_infor_panel_erro[self.indexImage][index])
+        efficiency = round(efficiency, 2)
+        self.resultsEfficiency.emit(str(efficiency))
         return self.showImagePanel.emit(image_panel)
